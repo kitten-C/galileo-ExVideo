@@ -1,0 +1,32 @@
+/* 通用重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif; /* 自定义字体 */
+  line-height: 1.5;
+  background-color: #fff; /* 设置背景色 */
+}
+
+/* 去除链接下划线 */
+a {
+  text-decoration: none;
+}
+
+/* 去除列表样式 */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 去除表单控件样式 */
+input,
+button,
+textarea {
+  border: none;
+  outline: none;
+  background: transparent;
+}
