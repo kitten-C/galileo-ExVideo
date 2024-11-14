@@ -1,10 +1,11 @@
-const koffi = require('koffi')
-const path = require('path')
+import koffi from 'koffi'
 
 class Dll {
   constructor(parameters) {
-    this.lib = koffi.load(path.resolve(path.dirname(__dirname), parameters.path))
+    this.lib = koffi.load(parameters.path)
+    this.fun = {}
     this.init(parameters.config)
+    console.log('Dll initscess')
   }
 
   init(config) {
@@ -12,9 +13,9 @@ class Dll {
       const v = config[k]
       const ret = v[0]
       const params = v[1]
-      this.lib.func(k, ret, params)
+      this.fun[k] = this.lib.func(k, ret, params)
     })
   }
 }
 
-module.exports = Dll
+export default Dll

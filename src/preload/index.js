@@ -1,20 +1,9 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron'
 
-// Custom APIs for renderer
-const api = {}
+contextBridge.exposeInMainWorld('dll', (value) => ipcRenderer.send('dll', value))
+contextBridge.exposeInMainWorld('aaaaaaa', () => ipcRenderer.send('ping'))
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  window.electron = electronAPI
-  window.api = api
-}
+contextBridge.exposeInMainWorld('electron', {
+  // 提供一个函数，监听主进程发送的命令行参数
+  onSetFolderPath: (callback) => ipcRenderer.on('set-folder-path', (event, args) => callback(args))
+})

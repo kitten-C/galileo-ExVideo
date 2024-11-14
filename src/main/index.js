@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import dll from './dll/index'
 
 function createWindow() {
   // Create the browser window.
@@ -10,7 +10,6 @@ function createWindow() {
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -33,6 +32,14 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    const args = {
+      argv: process.argv
+    }
+
+    mainWindow.webContents.send('set-folder-path', args)
+  })
 }
 
 // This method will be called when Electron has finished
@@ -51,7 +58,16 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('dll', (event, val) => {
+    // val 格式 {name: 'sixaxisDll', function: 'Connect', data: ['192.168.1.100', 8080, '192.168.1.88', 8080]}
+    try {
 
+      val.res = dll[val.name].fun[val.function](...val.data)
+      console.info('dll:', val)
+    } catch (error) {
+      console.error('dll err:', error)
+    }
+  })
   createWindow()
 
   app.on('activate', function () {
