@@ -59,8 +59,8 @@ onMounted(() => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   window.dll({ name: 'treadmillDll', function: 'InitTreadmill', data: [] })
   const id = externalParameters.value.id
-  videoSrc.value = `${up}/D:/assets/video_${id}.mp4`
-  audioSrc.value = `${up}/D:/assets/video_${id}.mp3`
+  videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
+  audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
   timer = new Timer(externalParameters.value.time, 100, handleTime)
 })
 </script>
