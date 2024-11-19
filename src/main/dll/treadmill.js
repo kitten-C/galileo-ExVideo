@@ -1,5 +1,6 @@
 import Dll from './dll'
-const dllPath = '../../resources/dll/treadmill/ComAPI_TCP.dll'
+
+const filename = 'treadmill/ComAPI_TCP.dll'
 
 const config = {
   InitTreadmill: ['int', []],
@@ -14,6 +15,6 @@ const config = {
   setWeight: ['int', ['double']]
 }
 
-const treadmillDll = new Dll({ path: dllPath, config })
+const treadmillDll = new Dll({ filename, config })
 
 export default treadmillDll

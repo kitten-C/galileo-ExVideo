@@ -1,11 +1,17 @@
 import koffi from 'koffi'
+const isDev = process.env.NODE_ENV === 'development'
 
+const getDllPath = (filename) => {
+  return isDev
+    ? `../../resources/dll/${filename}`
+    : `./resources/app.asar.unpacked/resources/dll/${filename}`
+}
 class Dll {
   constructor(parameters) {
-    this.lib = koffi.load(parameters.path)
+    const dllPath = getDllPath(parameters.filename)
+    this.lib = koffi.load(dllPath)
     this.fun = {}
     this.init(parameters.config)
-    console.log('Dll initscess')
   }
 
   init(config) {

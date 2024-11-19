@@ -61,9 +61,8 @@ app.whenReady().then(() => {
   ipcMain.on('dll', (event, val) => {
     // val 格式 {name: 'sixaxisDll', function: 'Connect', data: ['192.168.1.100', 8080, '192.168.1.88', 8080]}
     try {
-
       val.res = dll[val.name].fun[val.function](...val.data)
-      console.info('dll:', val)
+      console.info(`dll-${val.name}-val`, val)
     } catch (error) {
       console.error('dll err:', error)
     }
