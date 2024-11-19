@@ -15,6 +15,12 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
-    plugins: [vue()]
+    plugins: [vue()],
+    server: {
+      fs: {
+        // 允许为项目根目录的上一级提供服务
+        allow: ['D:\\']
+      }
+    }
   }
 })
