@@ -64,6 +64,10 @@ const handleTime = (time, untime) => {
   console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
 }
 
+const onComplete = () => {
+  deviceC.stop()
+}
+
 const initMedia = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   const id = externalParameters.value.id
@@ -84,10 +88,9 @@ const initDLLControl = (deviceConfig) => {
 
 onMounted(async () => {
   initMedia()
-  timer = new Timer(externalParameters.value.time, 100, handleTime)
+  timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
   const deviceConfig = await window.fileAPI.getDeviceConfig()
   initDLLControl(deviceConfig)
-
 })
 </script>
 
