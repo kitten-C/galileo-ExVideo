@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import Timer from '../utils/timer'
+import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
 
 const MokeExternalParameters = {
   id: 211012,
@@ -13,12 +14,12 @@ const videoRef = ref()
 const audioRef = ref()
 const showTimeText = ref(0)
 let timer
-let deviceConfig
+let treadmillDLLControl
+let sixAxisDLLControl
 
 const externalParameters = ref({ ...MokeExternalParameters })
 
 window.electron.onSetFolderPath((params) => {
-  console.log('params', params)
   if (import.meta.env.MODE === 'development') {
     externalParameters.value = MokeExternalParameters
   } else {
@@ -28,45 +29,54 @@ window.electron.onSetFolderPath((params) => {
 
 const deviceC = {
   start() {
-    console.log('deviceC.start')
-
     videoRef.value.play()
     audioRef.value.play()
     timer.start()
-    window.dll({ name: 'treadmillDll', function: 'StartTreadmill', data: [1, 3] })
+    treadmillDLLControl.start()
   },
   stop() {
     videoRef.value.pause()
     audioRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
-    window.dll({ name: 'treadmillDll', function: 'StopTreadmill', data: [3] })
+    treadmillDLLControl.stop()
+    sixAxisDLLControl.restore()
   },
   addVal() {
-    window.dll({ name: 'treadmillDll', function: 'AddVel', data: [100, 3] })
+    treadmillDLLControl.addVal()
   },
   delVel() {
-    window.dll({ name: 'treadmillDll', function: 'DelVel', data: [100, 3] })
+    treadmillDLLControl.delVel()
   }
 }
 
 const handleTime = (time, untime) => {
   showTimeText.value = untime / 1000
-  console.log('time', untime, videoRef.value?.currentTime)
+  const videoCurrentTime = videoRef.value?.currentTime
+  const treadmillRes = treadmillDLLControl.handleCompare(videoCurrentTime)
+  const sixAxisRes = sixAxisDLLControl.handleCompare(videoCurrentTime)
+  console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
 }
 
 const getSrc = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
-  window.dll({ name: 'treadmillDll', function: 'InitTreadmill', data: [] })
   const id = externalParameters.value.id
   videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
   audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
 }
 
+const initDLLControl = (deviceConfig) => {
+  const treadmillConfig = deviceConfig.find(v => v.name === 'treadmill').fileData
+  const sixAxisConfig = deviceConfig.find(v => v.name === 'sixAxis').fileData
+  treadmillDLLControl = new TreadmillDLLControl(treadmillConfig)
+  sixAxisDLLControl = new SixAxisDLLControl(sixAxisConfig)
+}
+
 onMounted(async () => {
   getSrc()
   timer = new Timer(externalParameters.value.time, 100, handleTime)
-  deviceConfig = await window.fileAPI.getDeviceConfig()
+  const deviceConfig = await window.fileAPI.getDeviceConfig()
+  initDLLControl(deviceConfig)
   console.log('deviceConfig', deviceConfig)
 })
 </script>
