@@ -1,16 +1,23 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import dll from './dll/index'
 import initIpc from './ipc'
 
 function createWindow() {
-  // Create the browser window.
+  const displays = screen.getAllDisplays()
+  let screenShow
+  if (displays.length > 1) {
+    screenShow = displays[1]
+  } else {
+    screenShow = displays[0]
+  }
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
-    show: false,
     autoHideMenuBar: true,
+    x: screenShow.bounds.x,
+    y: screenShow.bounds.y,
+    width: screenShow.bounds.width,
+    height: screenShow.bounds.height,
+    fullscreen: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
