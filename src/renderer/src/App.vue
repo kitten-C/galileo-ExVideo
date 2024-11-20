@@ -47,6 +47,12 @@ const deviceC = {
   },
   delVel() {
     treadmillDLLControl.delVel()
+  },
+  reset() {
+    treadmillDLLControl.reset()
+    sixAxisDLLControl.reset()
+    deviceC.stop()
+    deviceC.start()
   }
 }
 
@@ -58,11 +64,15 @@ const handleTime = (time, untime) => {
   console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
 }
 
-const getSrc = () => {
+const initMedia = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   const id = externalParameters.value.id
   videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
   audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
+
+  videoRef.value.addEventListener('ended', () => {
+    deviceC.reset()
+  })
 }
 
 const initDLLControl = (deviceConfig) => {
@@ -73,18 +83,18 @@ const initDLLControl = (deviceConfig) => {
 }
 
 onMounted(async () => {
-  getSrc()
+  initMedia()
   timer = new Timer(externalParameters.value.time, 100, handleTime)
   const deviceConfig = await window.fileAPI.getDeviceConfig()
   initDLLControl(deviceConfig)
-  console.log('deviceConfig', deviceConfig)
+
 })
 </script>
 
 <template>
   <div class="main">
     <video ref="videoRef" :src="videoSrc" controls></video>
-    <audio ref="audioRef" :src="audioSrc" controls loop></audio>
+    <audio ref="audioRef" :src="audioSrc" loop></audio>
     <button @click="deviceC.start">开始</button>
     <button @click="deviceC.stop">暂停</button>
     <button @click="deviceC.addVal">加速</button>
