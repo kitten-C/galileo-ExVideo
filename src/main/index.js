@@ -5,18 +5,17 @@ import initIpc from './ipc'
 
 function createWindow() {
   const displays = screen.getAllDisplays()
-  let screenShow
-  if (displays.length > 1) {
-    screenShow = displays[1]
-  } else {
-    screenShow = displays[0]
-  }
+  const largestDisplay = displays.reduce((prev, current) => {
+    return prev.size.width * prev.size.height > current.size.width * current.size.height
+      ? prev
+      : current
+  })
   const mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
-    x: screenShow.bounds.x,
-    y: screenShow.bounds.y,
-    width: screenShow.bounds.width,
-    height: screenShow.bounds.height,
+    x: largestDisplay.bounds.x + (largestDisplay.bounds.width - 800) / 2,
+    y: largestDisplay.bounds.y + (largestDisplay.bounds.height - 600) / 2,
+    width: largestDisplay.bounds.width,
+    height: largestDisplay.bounds.height,
     fullscreen: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
