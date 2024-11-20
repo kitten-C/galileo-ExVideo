@@ -11,8 +11,9 @@ const videoSrc = ref()
 const audioSrc = ref()
 const videoRef = ref()
 const audioRef = ref()
-let timer
 const showTimeText = ref(0)
+let timer
+let deviceConfig
 
 const externalParameters = ref({ ...MokeExternalParameters })
 
@@ -39,7 +40,6 @@ const deviceC = {
     audioRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
-
     window.dll({ name: 'treadmillDll', function: 'StopTreadmill', data: [3] })
   },
   addVal() {
@@ -51,17 +51,23 @@ const deviceC = {
 }
 
 const handleTime = (time, untime) => {
-  showTimeText.value = untime /1000
+  showTimeText.value = untime / 1000
   console.log('time', untime, videoRef.value?.currentTime)
 }
 
-onMounted(() => {
+const getSrc = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   window.dll({ name: 'treadmillDll', function: 'InitTreadmill', data: [] })
   const id = externalParameters.value.id
   videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
   audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
+}
+
+onMounted(async () => {
+  getSrc()
   timer = new Timer(externalParameters.value.time, 100, handleTime)
+  deviceConfig = await window.fileAPI.getDeviceConfig()
+  console.log('deviceConfig', deviceConfig)
 })
 </script>
 

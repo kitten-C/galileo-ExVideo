@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron'
 import dll from './dll/index'
+import { getDeviceConfig } from './utils/index.js'
 
 const initIpc = () => {
   ipcMain.on('dll', (event, val) => {
@@ -9,6 +10,14 @@ const initIpc = () => {
       console.info(`dll-${val.name}-val`, val)
     } catch (error) {
       console.error('dll err:', error)
+    }
+  })
+
+  ipcMain.handle('get-decive-config', async () => {
+    try {
+      return await getDeviceConfig()
+    } catch (err) {
+      return { success: false, error: err.message }
     }
   })
 }
