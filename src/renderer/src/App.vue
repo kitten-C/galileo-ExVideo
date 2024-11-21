@@ -88,10 +88,12 @@ onMounted(async () => {
   <div class="main">
     <video ref="videoRef" :src="videoSrc" controls></video>
     <audio ref="audioRef" :src="audioSrc" loop></audio>
-    <button @click="deviceC.start">开始</button>
-    <button @click="deviceC.stop">暂停</button>
-    <button @click="deviceC.addVal">加速</button>
-    <button @click="deviceC.delVel">减速</button>
+    <div class="btns">
+      <button @click="deviceC.start">开始</button>
+      <button @click="deviceC.stop">暂停</button>
+      <button @click="deviceC.addVal">加速</button>
+      <button @click="deviceC.delVel">减速</button>
+    </div>
     <div>
       {{ showTimeText }}
     </div>
@@ -100,9 +102,25 @@ onMounted(async () => {
 
 <style lang="scss">
 .main {
+  position: relative;
+
   video {
     height: 100%;
     width: 100%;
+  }
+
+  .btns {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 50%;
+    button {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-left: 20px;
+      cursor: pointer;
+      font-size: 20px;
+    }
   }
 }
 </style>

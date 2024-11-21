@@ -93,7 +93,7 @@ export const getOptions = () => {
   console.log('process.argv', process.argv)
   const program = new Command()
   program.option('--id <Number>', '素材id', Number).option('--time <Number>', '训练时长', Number)
-  program.parse(process.argv)
+  program.parse()
   const options = program.opts()
   global.sharedOptions = options
   console.log('options', options)
