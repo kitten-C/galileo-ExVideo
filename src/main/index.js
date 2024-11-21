@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import initIpc from './ipc'
+import { Command } from 'commander'
 
 function createWindow() {
   const displays = screen.getAllDisplays()
@@ -41,11 +42,14 @@ function createWindow() {
   }
 
   mainWindow.webContents.on('did-finish-load', () => {
-    const args = {
-      argv: process.argv
-    }
+    console.log('process.argv', process.argv)
+    const program = new Command()
+    program.option('--id <Number>', '素材id', Number).option('--time <Number>', '训练时长', Number)
+    program.parse(process.argv)
+    const options = program.opts()
+    console.log('options', options)
 
-    mainWindow.webContents.send('set-folder-path', args)
+    mainWindow.webContents.send('set-folder-path', options)
   })
 }
 

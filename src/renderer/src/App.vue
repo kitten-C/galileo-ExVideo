@@ -1,12 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
 import Timer from '../utils/timer'
 import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
-
-const MokeExternalParameters = {
-  id: 211012,
-  time: 60 * 10000
-}
 
 const videoSrc = ref()
 const audioSrc = ref()
@@ -17,14 +12,11 @@ let timer
 let treadmillDLLControl
 let sixAxisDLLControl
 
-const externalParameters = ref({ ...MokeExternalParameters })
+const externalParameters = ref({})
 
 window.electron.onSetFolderPath((params) => {
-  if (import.meta.env.MODE === 'development') {
-    externalParameters.value = MokeExternalParameters
-  } else {
-    externalParameters.value = params
-  }
+  console.log('params', params)
+  externalParameters.value = params
 })
 
 const deviceC = {
@@ -74,7 +66,7 @@ const initMedia = () => {
   videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
   audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
 
-  videoRef.value.addEventListener('ended', () => {
+  videoRef.value?.addEventListener('ended', () => {
     deviceC.reset()
   })
 }
@@ -86,8 +78,12 @@ const initDLLControl = (deviceConfig) => {
   sixAxisDLLControl = new SixAxisDLLControl(sixAxisConfig)
 }
 
-onMounted(async () => {
+watchEffect(() => {
   initMedia()
+})
+
+onMounted(async () => {
+  console.log('onMounted')
   timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
   const deviceConfig = await window.fileAPI.getDeviceConfig()
   initDLLControl(deviceConfig)
