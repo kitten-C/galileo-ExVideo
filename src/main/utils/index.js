@@ -24,7 +24,7 @@ function parseString(input) {
 }
 
 export const getDeviceConfig = async () => {
-  const id = 211012
+  const id = global.sharedOptions.id
   const deviceConfigNames = [
     { name: 'base', fileName: `video_${id}.json` },
     { name: 'sixAxis', fileName: `video_${id}_six_axis_cmd_2.txt` },

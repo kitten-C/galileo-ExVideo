@@ -83,9 +83,8 @@ watchEffect(() => {
 })
 
 onMounted(async () => {
-  console.log('onMounted')
-  timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
   const deviceConfig = await window.fileAPI.getDeviceConfig()
+  console.log('deviceConfig', deviceConfig)
   initDLLControl(deviceConfig)
 })
 </script>
