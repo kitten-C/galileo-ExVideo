@@ -80,6 +80,7 @@ const initDLLControl = (deviceConfig) => {
 
 watchEffect(() => {
   initMedia()
+  timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
 })
 
 onMounted(async () => {
