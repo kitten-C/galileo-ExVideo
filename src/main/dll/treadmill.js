@@ -1,4 +1,5 @@
 import Dll from './dll'
+import koffi from 'koffi'
 
 const filename = 'treadmill/ComAPI_TCP.dll'
 
@@ -16,5 +17,37 @@ const config = {
 }
 
 const treadmillDll = new Dll({ filename, config })
+
+const callback = (
+  nodeNum,
+  left_control,
+  right_control,
+  left_ratio,
+  right_ratio,
+  obs,
+  left_warn,
+  right_warn,
+  left_speed,
+  right_speed
+) => {
+  console.log('nodeNum:', nodeNum)
+  console.log('left_control:', left_control)
+  console.log('right_control:', right_control)
+  console.log('left_ratio:', left_ratio)
+  console.log('right_ratio:', right_ratio)
+  console.log('obs:', obs)
+  console.log('left_warn:', left_warn)
+  console.log('right_warn:', right_warn)
+  console.log('left_speed:', left_speed)
+  console.log('right_speed:', right_speed)
+}
+const TreadmillV2DataCallback = koffi.proto(
+  'void TreadmillV2DataCallback(int nodeNum, float left_control, float right_control, float left_ratio, float right_ratio, int obs, int left_wran, int right_warn, float left_speed, float right_speed)'
+)
+const InitTreadmill = treadmillDll.lib.func('void InitTreadmill(TreadmillV2DataCallback *cb1)')
+
+let cb1 = koffi.register(callback, koffi.pointer(TreadmillV2DataCallback))
+const res = InitTreadmill(cb1)
+console.log('treadmillDllres', res)
 
 export default treadmillDll

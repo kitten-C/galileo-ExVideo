@@ -4,7 +4,7 @@ import config from '../../main/config'
 export class TreadmillDLLControl extends TimeComparator {
   constructor(config) {
     super(config)
-    this.init()
+    // this.init()
     this.currentSpeed = 0
   }
 
