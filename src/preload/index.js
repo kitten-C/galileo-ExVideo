@@ -17,5 +17,6 @@ contextBridge.exposeInMainWorld('fileAPI', {
       console.error('读取文件出错:', error.message)
       throw error
     }
-  }
+  },
+  getOptions: () => ipcRenderer.invoke('get-options')
 })

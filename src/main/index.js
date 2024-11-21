@@ -2,7 +2,9 @@ import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import initIpc from './ipc'
-import { Command } from 'commander'
+import { getOptions } from './utils'
+
+getOptions()
 
 function createWindow() {
   const displays = screen.getAllDisplays()
@@ -40,17 +42,6 @@ function createWindow() {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    console.log('process.argv', process.argv)
-    const program = new Command()
-    program.option('--id <Number>', '素材id', Number).option('--time <Number>', '训练时长', Number)
-    program.parse(process.argv)
-    const options = program.opts()
-    console.log('options', options)
-    global.sharedOptions = options
-    mainWindow.webContents.send('set-folder-path', options)
-  })
 }
 
 // This method will be called when Electron has finished
@@ -67,8 +58,8 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  createWindow()
   initIpc()
+  createWindow()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the

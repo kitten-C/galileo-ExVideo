@@ -20,6 +20,13 @@ const initIpc = () => {
       return { success: false, error: err.message }
     }
   })
+  ipcMain.handle('get-options', () => {
+    try {
+      return global.sharedOptions
+    } catch (err) {
+      return { success: false, error: err.message }
+    }
+  })
 }
 
 export default initIpc

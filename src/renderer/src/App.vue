@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue'
+import { nextTick, onMounted, ref, watchEffect } from 'vue'
 import Timer from '../utils/timer'
 import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
 
@@ -13,11 +13,6 @@ let treadmillDLLControl
 let sixAxisDLLControl
 
 const externalParameters = ref({})
-
-window.electron.onSetFolderPath((params) => {
-  console.log('params', params)
-  externalParameters.value = params
-})
 
 const deviceC = {
   start() {
@@ -78,15 +73,14 @@ const initDLLControl = (deviceConfig) => {
   sixAxisDLLControl = new SixAxisDLLControl(sixAxisConfig)
 }
 
-watchEffect(() => {
-  initMedia()
-  timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
-})
-
 onMounted(async () => {
   const deviceConfig = await window.fileAPI.getDeviceConfig()
-  console.log('deviceConfig', deviceConfig)
+  const options = await window.fileAPI.getOptions()
+  externalParameters.value = options
+  console.log('deviceConfig', deviceConfig, options)
   initDLLControl(deviceConfig)
+  initMedia()
+  timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
 })
 </script>
 
