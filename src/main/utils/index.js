@@ -91,9 +91,16 @@ export const getDeviceConfig = async () => {
 
 export const getOptions = () => {
   const program = new Command()
-  program.option('--id <Number>', '素材id', Number).option('--time <Number>', '训练时长', Number)
+  program
+    .option('--id <Number>', '素材id', Number)
+    .option('--gameId <Number>', '素材id (alias for --id)', Number)
+    .option('--time <Number>', '训练时长', Number)
+    .option('--Time <Number>', '训练时长', Number)
   program.parse()
   const options = program.opts()
+  if (options.gameId) options.id = options.gameId
+  if (options.Time) options.id = options.time
+
   global.sharedOptions = options
   console.log('options', options)
   return options

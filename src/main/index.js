@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import initIpc from './ipc'
 import { getOptions } from './utils'
-
+import './matt'
 getOptions()
 
 function createWindow() {
