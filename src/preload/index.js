@@ -22,5 +22,7 @@ contextBridge.exposeInMainWorld('fileAPI', {
   updateDeviceSpeed: (callback) =>
     ipcRenderer.on('update-device-speed', (_event, value) => callback(value)),
   updateDeviceDistance: (callback) =>
-    ipcRenderer.on('update-device-distance', (_event, value) => callback(value))
+    ipcRenderer.on('update-device-distance', (_event, value) => callback(value)),
+  updateDeviceWarn: (callback) =>
+    ipcRenderer.on('update-device-warn', (_event, value) => callback(value))
 })

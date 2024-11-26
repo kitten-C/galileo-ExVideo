@@ -95,6 +95,10 @@ const initUpdaeLeftText = () => {
 
     leftText.value.distance = value
   })
+  window.fileAPI.updateDeviceWarn(() => {
+    console.log('updateDeviceDistance')
+    deviceC.stop()
+  })
 }
 
 onMounted(async () => {

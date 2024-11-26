@@ -44,6 +44,9 @@ const callback = (
   // console.log('left_speed:', left_speed)
   // console.log('right_speed:', right_speed)
   BrowserWindow.getAllWindows()[0].webContents.send('update-device-speed', right_speed)
+  if (left_warn || right_warn || obs) {
+    BrowserWindow.getAllWindows()[0].webContents.send('update-device-warn')
+  }
 }
 const TreadmillV2DataCallback = koffi.proto(
   'void TreadmillV2DataCallback(int nodeNum, float left_control, float right_control, float left_ratio, float right_ratio, int obs, int left_wran, int right_warn, float left_speed, float right_speed)'
