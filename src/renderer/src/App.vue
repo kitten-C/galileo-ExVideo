@@ -12,6 +12,10 @@ const videoRef = ref()
 const audioRef = ref()
 const showTimeText = ref(0)
 const countdown = ref(0)
+const leftText = ref({
+  speed: 0,
+  distance: 0
+})
 let timer
 let treadmillDLLControl
 let sixAxisDLLControl
@@ -80,6 +84,19 @@ const initDLLControl = (deviceConfig) => {
   sixAxisDLLControl = new SixAxisDLLControl(sixAxisConfig)
 }
 
+const initUpdaeLeftText = () => {
+  window.fileAPI.updateDeviceSpeed((value) => {
+    console.log('updateDeviceSpeed', value)
+
+    leftText.value.speed = value
+  })
+  window.fileAPI.updateDeviceDistance((value) => {
+    console.log('updateDeviceDistance', value)
+
+    leftText.value.distance = value
+  })
+}
+
 onMounted(async () => {
   const deviceConfig = await window.fileAPI.getDeviceConfig()
   const options = await window.fileAPI.getOptions()
@@ -89,6 +106,7 @@ onMounted(async () => {
   initMedia()
   countdown.value = externalParameters.value.time
   timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
+  initUpdaeLeftText()
 })
 </script>
 
@@ -116,8 +134,8 @@ onMounted(async () => {
         <div>X轴侧倾角度：</div>
         <div>Y轴侧倾角度：</div>
         <div class="left_text_title">步行实时数据</div>
-        <div>位移：</div>
-        <div>速度：</div>
+        <div>位移：{{ leftText.distance }}m</div>
+        <div>速度：{{ leftText.speed }}m/s</div>
       </div>
     </div>
   </div>
@@ -183,6 +201,7 @@ onMounted(async () => {
       color: #fff;
       padding-left: 18%;
       line-height: 1.5vw;
+
       .left_text_title {
         font-size: 1vw;
         margin: 4% 0;

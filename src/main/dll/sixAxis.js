@@ -16,12 +16,12 @@ const config = {
     'void',
     [
       'int', // timestamp
-      'float', // rotationX
-      'float', // rotationY
+      'float', // rotationX X轴侧倾角度
+      'float', // rotationY Y轴侧倾角度
       'float', // rotationZ
-      'float', // accelerationX
-      'float', // accelerationY
-      'float', // accelerationZ
+      'float', // accelerationX 左右平移
+      'float', // accelerationY 上下移动
+      'float', // accelerationZ 前后平移
       'int', // platformControl
       'float' // accScale
     ]

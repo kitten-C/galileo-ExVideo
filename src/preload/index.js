@@ -18,5 +18,9 @@ contextBridge.exposeInMainWorld('fileAPI', {
       throw error
     }
   },
-  getOptions: () => ipcRenderer.invoke('get-options')
+  getOptions: () => ipcRenderer.invoke('get-options'),
+  updateDeviceSpeed: (callback) =>
+    ipcRenderer.on('update-device-speed', (_event, value) => callback(value)),
+  updateDeviceDistance: (callback) =>
+    ipcRenderer.on('update-device-distance', (_event, value) => callback(value))
 })
