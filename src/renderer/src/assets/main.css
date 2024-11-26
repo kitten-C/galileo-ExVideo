@@ -1,1 +1,41 @@
 @import './base.css';
+
+/* 引入 Regular 字体 */
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('./fonts/Alibaba-PuHuiTi-Regular.otf') format('opentype');
+  font-weight: 400; /* 常规粗细 */
+  font-style: normal; /* 常规样式 */
+}
+
+/* 引入 Medium 字体 */
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('./fonts/Alibaba-PuHuiTi-Medium.otf') format('opentype');
+  font-weight: 500; /* 中等粗细 */
+  font-style: normal;
+}
+
+/* 引入 Bold 字体 */
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('./fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
+  font-weight: 700; /* 加粗 */
+  font-style: normal;
+}
+
+/* 引入 Heavy 字体 */
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('./fonts/Alibaba-PuHuiTi-Heavy.otf') format('opentype');
+  font-weight: 900; /* 超重 */
+  font-style: normal;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  font-family: 'AlibabaPuHuiTi';
+}

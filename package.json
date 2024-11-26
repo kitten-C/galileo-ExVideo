@@ -21,6 +21,7 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "commander": "^12.1.0",
+    "dayjs": "^1.11.13",
     "koffi": "^2.9.2",
     "mqtt": "^5.10.2",
     "sass": "^1.81.0"
