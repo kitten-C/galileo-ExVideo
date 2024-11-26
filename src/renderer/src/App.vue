@@ -14,7 +14,12 @@ const showTimeText = ref(0)
 const countdown = ref(0)
 const leftText = ref({
   speed: 0,
-  distance: 0
+  distance: 0,
+  rotationX: 0,
+  rotationY: 0,
+  accelerationX: 0,
+  accelerationY: 0,
+  accelerationZ: 0
 })
 let timer
 let treadmillDLLControl
@@ -59,7 +64,19 @@ const handleTime = (time, untime) => {
   const videoCurrentTime = videoRef.value?.currentTime
   const treadmillRes = treadmillDLLControl.handleCompare(videoCurrentTime)
   const sixAxisRes = sixAxisDLLControl.handleCompare(videoCurrentTime)
-  console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
+  // console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
+  if (sixAxisRes.success) {
+    const sixAxisData = sixAxisRes.data
+    const {
+      acc: [rotationX, rotationY],
+      angle: [accelerationX, accelerationY, accelerationZ]
+    } = sixAxisData
+    leftText.value.rotationX = rotationX
+    leftText.value.rotationY = rotationY
+    leftText.value.accelerationX = accelerationX
+    leftText.value.accelerationY = accelerationY
+    leftText.value.accelerationZ = accelerationZ
+  }
 }
 
 const onComplete = () => {
@@ -86,17 +103,17 @@ const initDLLControl = (deviceConfig) => {
 
 const initUpdaeLeftText = () => {
   window.fileAPI.updateDeviceSpeed((value) => {
-    console.log('updateDeviceSpeed', value)
+    // console.log('updateDeviceSpeed', value)
 
     leftText.value.speed = value
   })
   window.fileAPI.updateDeviceDistance((value) => {
-    console.log('updateDeviceDistance', value)
+    // console.log('updateDeviceDistance', value)
 
     leftText.value.distance = value
   })
   window.fileAPI.updateDeviceWarn(() => {
-    console.log('updateDeviceDistance')
+    // console.log('updateDeviceDistance')
     deviceC.stop()
   })
 }
@@ -132,11 +149,11 @@ onMounted(async () => {
       <img src="./assets/ui/training_left.png">
       <div class="left_text">
         <div class="left_text_title">地面实时数据</div>
-        <div>上下移动：</div>
-        <div>左右平移：</div>
-        <div>前后平移：</div>
-        <div>X轴侧倾角度：</div>
-        <div>Y轴侧倾角度：</div>
+        <div>上下移动：{{ leftText.rotationX }}mm</div>
+        <div>左右平移：{{ leftText.rotationY }}mm</div>
+        <div>前后平移：{{ leftText.accelerationX }}mm</div>
+        <div>X轴侧倾角度：{{ leftText.accelerationY }}°</div>
+        <div>Y轴侧倾角度：{{ leftText.accelerationZ }}°</div>
         <div class="left_text_title">步行实时数据</div>
         <div>位移：{{ leftText.distance }}m</div>
         <div>速度：{{ leftText.speed }}m/s</div>
