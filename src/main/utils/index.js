@@ -92,14 +92,17 @@ export const getDeviceConfig = async () => {
 export const getOptions = () => {
   const program = new Command()
   program
+    .option('--Language <String>', 'Language', String)
+    .option('--ProjectIndex <Number>', '医院', Number)
+    .option('--Difficulty <Number>', '困难程度', Number)
     .option('--id <Number>', '素材id', Number)
-    .option('--gameId <Number>', '素材id (alias for --id)', Number)
+    .option('--GameId <Number>', '素材id (alias for --id)', Number)
     .option('--time <Number>', '训练时长', Number)
     .option('--Time <Number>', '训练时长', Number)
   program.parse()
   const options = program.opts()
-  if (options.gameId) options.id = options.gameId
-  if (options.Time) options.id = options.time
+  if (options.GameId) options.id = options.GameId
+  if (options.Time) options.time = options.Time * 60 * 1000
 
   global.sharedOptions = options
   console.log('options', options)

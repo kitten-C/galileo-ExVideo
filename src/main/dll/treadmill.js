@@ -1,8 +1,6 @@
 import Dll from './dll'
 import koffi from 'koffi'
-import { BrowserWindow, app } from 'electron'
-
-const mainWindow = BrowserWindow.getAllWindows()[0]
+import { BrowserWindow } from 'electron'
 
 const filename = 'treadmill/ComAPI_TCP.dll'
 
