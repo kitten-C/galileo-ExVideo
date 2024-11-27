@@ -116,6 +116,14 @@ const initUpdaeLeftText = () => {
     // console.log('updateDeviceDistance')
     deviceC.stop()
   })
+  window.mqtt.continue(() => {
+    console.log('window.mqtt.continue')
+    deviceC.start()
+  })
+  window.mqtt.pause(() => {
+    console.log('window.mqtt.stop')
+    deviceC.stop()
+  })
 }
 
 onMounted(async () => {
