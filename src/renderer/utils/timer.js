@@ -16,10 +16,10 @@ class Timer {
 
     this.startTime = Date.now()
     this.timerId = setTimeout(() => {
-      this.remainingTime = 0
-      this.stopUpdates()
+      // this.remainingTime = 0
+      // this.stopUpdates()
       this.onComplete()
-    }, this.remainingTime)
+    }, this.remainingTime - 5700)
 
     this.startUpdates()
   }

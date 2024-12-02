@@ -6,7 +6,7 @@
     <div class="text_2">
       {{ $t('TrainEndTip') }}
     </div>
-    <audio :src="`src/assets/audio/${locale}/end321.mp3`" controls autoplay></audio>
+    <audio v-show="false" :src="`src/assets/audio/${locale}/end321.mp3`" controls autoplay></audio>
   </div>
 </template>
 <script setup>

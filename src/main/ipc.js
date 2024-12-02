@@ -1,7 +1,7 @@
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import dll from './dll/index'
 import { getDeviceConfig } from './utils/index.js'
-
+const isDev = process.env.NODE_ENV === 'development'
 const initIpc = () => {
   ipcMain.on('dll', (event, val) => {
     // val 格式 {name: 'sixAxisDll', function: 'Connect', data: ['192.168.1.100', 8080, '192.168.1.88', 8080]}
@@ -25,6 +25,13 @@ const initIpc = () => {
       return global.sharedOptions
     } catch (err) {
       return { success: false, error: err.message }
+    }
+  })
+  ipcMain.handle('app-quit-self', () => {
+    if (isDev) {
+      console.log('假装退出了')
+    } else {
+      app.quit()
     }
   })
 }

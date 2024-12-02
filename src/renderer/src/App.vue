@@ -47,6 +47,7 @@ const deviceC = {
     await transitionManager.end()
     console.log('stop transitionManager done')
     deviceC.pause()
+    window.electron.quit()
   },
   pause() {
     transitionManager.pause()
