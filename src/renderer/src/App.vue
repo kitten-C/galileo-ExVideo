@@ -54,7 +54,7 @@ const deviceC = {
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
     treadmillDLLControl.stop()
-    sixAxisDLLControl.restore()
+    sixAxisDLLControl?.restore()
   },
   continue() {
     transitionManager.continue()
@@ -70,9 +70,9 @@ const deviceC = {
   },
   reset() {
     treadmillDLLControl.reset()
-    sixAxisDLLControl.reset()
+    sixAxisDLLControl?.reset()
     deviceC.pause()
-    deviceC.start()
+    deviceC.continue()
   }
 }
 
@@ -81,9 +81,9 @@ const handleTime = (time, untime) => {
   showTimeText.value = untime / 1000
   const videoCurrentTime = videoRef.value?.currentTime
   const treadmillRes = treadmillDLLControl.handleCompare(videoCurrentTime)
-  const sixAxisRes = sixAxisDLLControl.handleCompare(videoCurrentTime)
+  const sixAxisRes = sixAxisDLLControl?.handleCompare(videoCurrentTime)
   // console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
-  if (sixAxisRes.success) {
+  if (sixAxisRes?.success) {
     const sixAxisData = sixAxisRes.data
     const {
       acc: [rotationX, rotationY],
@@ -114,7 +114,7 @@ const initMedia = () => {
 
 const initDLLControl = (_config) => {
   treadmillDLLControl = new TreadmillDLLControl(_config.treadmill.fileData)
-  sixAxisDLLControl = new SixAxisDLLControl(_config.sixAxis.fileData)
+  _config.sixAxis.fileData && (sixAxisDLLControl = new SixAxisDLLControl(_config.sixAxis.fileData))
 }
 
 const initUpdaeLeftText = () => {
@@ -147,6 +147,8 @@ const initUpdaeLeftText = () => {
 
 const getDeviceConfig = async () => {
   const res = await window.fileAPI.getDeviceConfig()
+  console.log('res', res)
+
   res.forEach((element) => {
     deviceConfig.value[element.name] = element
   })

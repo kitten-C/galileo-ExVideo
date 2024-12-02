@@ -9,7 +9,7 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev --watch -- --id=211012 --time=500000 --Language=en",
+    "dev": "electron-vite dev --watch -- --id=211034 --time=500000 --Language=en",
     "build": "electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
