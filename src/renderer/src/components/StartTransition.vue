@@ -6,18 +6,18 @@
     <div class="text_2">
       {{ $t('TrainStartTip') }}
     </div>
-    <audio
-      v-show="false"
-      :src="`src/assets/audio/${locale}/Start321.mp3`"
-      controls
-      autoplay
-    ></audio>
-    <!-- <audio :src="`src/assets/audio/${locale}/end321.mp3`" controls autoplay></audio> -->
+    <audio v-show="false" :src="audioObj[locale]" controls autoplay></audio>
   </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import audioCn from '../assets/audio/cn/Start321.mp3'
+import audioEn from '../assets/audio/en/Start321.mp3'
+const audioObj = {
+  cn: audioCn,
+  en: audioEn
+}
 const { locale } = useI18n()
 const num = ref(3)
 onMounted(() => {
