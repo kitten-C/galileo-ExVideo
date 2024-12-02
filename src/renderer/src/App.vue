@@ -4,8 +4,12 @@ import Timer from '../utils/timer'
 import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import transitionManager from '../utils/transitionManager'
+
 dayjs.extend(duration)
 dayjs.duration(100)
+
+
 const videoSrc = ref()
 const audioSrc = ref()
 const videoRef = ref()
@@ -24,25 +28,39 @@ const leftText = ref({
 let timer
 let treadmillDLLControl
 let sixAxisDLLControl
+const deviceConfig = ref({})
 
 const externalParameters = ref({})
 const countdownFormat = computed(() => {
   return dayjs.duration(countdown.value).format('HH:mm:ss')
 })
 const deviceC = {
-  start() {
-    videoRef.value.play()
+  async start() {
+    console.log('start')
+    await transitionManager.start()
+    console.log('start transitionManager done')
+    deviceC.continue()
     audioRef.value.play()
-    timer.start()
-    treadmillDLLControl.start()
   },
-  stop() {
+  async stop() {
+    console.log('stop')
+    await transitionManager.end()
+    console.log('stop transitionManager done')
+    deviceC.pause()
+  },
+  pause() {
+    transitionManager.pause()
     videoRef.value.pause()
-    audioRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
     treadmillDLLControl.stop()
     sixAxisDLLControl.restore()
+  },
+  continue() {
+    transitionManager.continue()
+    videoRef.value.play()
+    timer.start()
+    treadmillDLLControl.start()
   },
   addVal() {
     treadmillDLLControl.addVal()
@@ -94,11 +112,9 @@ const initMedia = () => {
   })
 }
 
-const initDLLControl = (deviceConfig) => {
-  const treadmillConfig = deviceConfig.find(v => v.name === 'treadmill').fileData
-  const sixAxisConfig = deviceConfig.find(v => v.name === 'sixAxis').fileData
-  treadmillDLLControl = new TreadmillDLLControl(treadmillConfig)
-  sixAxisDLLControl = new SixAxisDLLControl(sixAxisConfig)
+const initDLLControl = (_config) => {
+  treadmillDLLControl = new TreadmillDLLControl(_config.treadmill.fileData)
+  sixAxisDLLControl = new SixAxisDLLControl(_config.sixAxis.fileData)
 }
 
 const initUpdaeLeftText = () => {
@@ -114,28 +130,40 @@ const initUpdaeLeftText = () => {
   })
   window.fileAPI.updateDeviceWarn(() => {
     // console.log('updateDeviceDistance')
-    deviceC.stop()
+    deviceC.pause()
   })
   window.mqtt.continue(() => {
     console.log('window.mqtt.continue')
-    deviceC.start()
+    deviceC.continue()
   })
   window.mqtt.pause(() => {
     console.log('window.mqtt.stop')
-    deviceC.stop()
+    deviceC.pause()
+  })
+  window.mqtt.close(() => {
+    console.log('window.mqtt.close')
   })
 }
 
+const getDeviceConfig = async () => {
+  const res = await window.fileAPI.getDeviceConfig()
+  res.forEach((element) => {
+    deviceConfig.value[element.name] = element
+  })
+  console.log('res', res)
+
+}
+
 onMounted(async () => {
-  const deviceConfig = await window.fileAPI.getDeviceConfig()
+  await getDeviceConfig()
   const options = await window.fileAPI.getOptions()
   externalParameters.value = options
-  console.log('deviceConfig', deviceConfig, options)
-  initDLLControl(deviceConfig)
+  initDLLControl(deviceConfig.value)
   initMedia()
   countdown.value = externalParameters.value.time
   timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
   initUpdaeLeftText()
+  deviceC.start()
 })
 </script>
 
@@ -144,10 +172,12 @@ onMounted(async () => {
     <video ref="videoRef" :src="videoSrc"></video>
     <audio ref="audioRef" :src="audioSrc" loop></audio>
     <div class="btns">
-      <button @click="deviceC.start">{{ $t('BtnStart') }}</button>
-      <button @click="deviceC.stop">暂停</button>
-      <button @click="deviceC.addVal">加速</button>
-      <button @click="deviceC.delVel">减速</button>
+      <button @click="deviceC.continue">继续</button>
+      <button @click="deviceC.pause">暂停</button>
+      <button @click="deviceC.start">开始</button>
+      <button @click="deviceC.stop">退出</button>
+      <!-- <button @click="deviceC.addVal">加速</button>
+      <button @click="deviceC.delVel">减速</button> -->
     </div>
     <div class="top">
       <img src="./assets/ui/training_nav.png">
@@ -166,6 +196,9 @@ onMounted(async () => {
         <div>{{ $t('DataStepMoveTitle') }}{{ leftText.distance }}m</div>
         <div>{{ $t('DataStepSpeedTitle') }}{{ leftText.speed }}m/s</div>
       </div>
+    </div>
+    <div class="bottom">
+      {{ $t(`${deviceConfig?.base?.fileData?.introduction_name || ''}`) }}
     </div>
   </div>
 </template>
@@ -238,11 +271,20 @@ onMounted(async () => {
     }
   }
 
+  .bottom {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #fff;
+  }
+
   .btns {
     position: absolute;
     transform: translateX(-50%);
     left: 50%;
     top: 50%;
+    z-index: 9999;
 
     button {
       border: 1px solid #ccc;

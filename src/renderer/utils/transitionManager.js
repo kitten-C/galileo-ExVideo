@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import EndTransition from '../src/components/EndTransition.vue'
 import StartTransition from '../src/components/StartTransition.vue'
 import PauseTransition from '../src/components/PauseTransition.vue'
-
+import i18n from '../src/i18n'
 class TransitionManager {
   constructor({ start, end, pause }) {
     this.components = { start, end, pause }
@@ -21,6 +21,7 @@ class TransitionManager {
     document.body.appendChild(container)
 
     this.currentApp = createApp(component)
+    this.currentApp.use(i18n)
     this.currentApp.mount(container)
     this.currentContainer = container
   }
@@ -40,7 +41,7 @@ class TransitionManager {
     this.insertComponent(this.components.start)
     return new Promise((resolve) => {
       setTimeout(() => {
-        this.removeCurrentComponent()
+        // this.removeCurrentComponent()
         resolve()
       }, this.time) // 自动移除的时间
     })
