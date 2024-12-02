@@ -42,7 +42,7 @@ class TransitionManager {
       setTimeout(() => {
         this.removeCurrentComponent()
         resolve()
-      }, 4000) // 自动移除的时间
+      }, 4500) // 自动移除的时间
     })
   }
   // 移除暂停组件
@@ -57,7 +57,7 @@ class TransitionManager {
       setTimeout(() => {
         this.removeCurrentComponent()
         resolve()
-      }, 5000) // 自动移除的时间
+      }, 5500) // 自动移除的时间
     })
   }
 
