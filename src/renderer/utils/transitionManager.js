@@ -8,7 +8,6 @@ class TransitionManager {
     this.components = { start, end, pause }
     this.currentApp = null // 当前渲染的 Vue 实例
     this.currentContainer = null // 当前的 DOM 容器
-    this.time = 4000
   }
 
   // 插入 Vue 组件到 DOM 中
@@ -41,14 +40,14 @@ class TransitionManager {
     this.insertComponent(this.components.start)
     return new Promise((resolve) => {
       setTimeout(() => {
-        // this.removeCurrentComponent()
+        this.removeCurrentComponent()
         resolve()
-      }, this.time) // 自动移除的时间
+      }, 4000) // 自动移除的时间
     })
   }
   // 移除暂停组件
   continue() {
-    this.removePauseComponent()
+    this.removeCurrentComponent()
   }
 
   // 显示结束组件
@@ -58,26 +57,13 @@ class TransitionManager {
       setTimeout(() => {
         this.removeCurrentComponent()
         resolve()
-      }, this.time) // 自动移除的时间
+      }, 5000) // 自动移除的时间
     })
   }
 
   // 显示暂停组件
   pause() {
     this.insertComponent(this.components.pause)
-  }
-
-  // 开始并移除暂停组件
-  startWithPauseRemoval() {
-    this.removePauseComponent()
-    return this.start()
-  }
-
-  // 移除暂停组件
-  removePauseComponent() {
-    if (this.currentApp && this.currentContainer === this.components.pause) {
-      this.removeCurrentComponent()
-    }
   }
 }
 

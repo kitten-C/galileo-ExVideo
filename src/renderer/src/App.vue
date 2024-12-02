@@ -89,11 +89,11 @@ const handleTime = (time, untime) => {
       acc: [rotationX, rotationY],
       angle: [accelerationX, accelerationY, accelerationZ]
     } = sixAxisData
-    leftText.value.rotationX = rotationX
-    leftText.value.rotationY = rotationY
-    leftText.value.accelerationX = accelerationX
-    leftText.value.accelerationY = accelerationY
-    leftText.value.accelerationZ = accelerationZ
+    leftText.value.rotationX = Math.floor(rotationX * 100) / 100
+    leftText.value.rotationY = Math.floor(rotationY * 100) / 100
+    leftText.value.accelerationX = Math.floor(accelerationX * 100) / 100
+    leftText.value.accelerationY = Math.floor(accelerationY * 100) / 100
+    leftText.value.accelerationZ = Math.floor(accelerationZ * 100) / 100
   }
 }
 
@@ -121,12 +121,12 @@ const initUpdaeLeftText = () => {
   window.fileAPI.updateDeviceSpeed((value) => {
     // console.log('updateDeviceSpeed', value)
 
-    leftText.value.speed = value
+    leftText.value.speed = Math.floor(value * 100) / 100
   })
   window.fileAPI.updateDeviceDistance((value) => {
     // console.log('updateDeviceDistance', value)
 
-    leftText.value.distance = value
+    leftText.value.distance = Math.floor(value * 100) / 100
   })
   window.fileAPI.updateDeviceWarn(() => {
     // console.log('updateDeviceDistance')

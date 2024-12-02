@@ -1,17 +1,19 @@
 <template>
-  <div class="start_transition">
+  <div v-show="num > 0" class="start_transition">
     <div class="text_1">
       {{ num }}
     </div>
     <div class="text_2">
       {{ $t('TrainStartTip') }}
     </div>
-    <audio src="../assets/audio/en/ConsoleStop.mp3" controls></audio>
-    <audio src="/audio/en/DeviceError.mp3" controls></audio>
+    <audio v-show="false" :src="`src/assets/audio/${locale}/Start321.mp3`" controls autoplay></audio>
+    <!-- <audio :src="`src/assets/audio/${locale}/end321.mp3`" controls autoplay></audio> -->
   </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { locale } = useI18n()
 const num = ref(3)
 onMounted(() => {
   setInterval(() => {
