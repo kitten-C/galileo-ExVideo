@@ -5,10 +5,10 @@ import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import transitionManager from '../utils/transitionManager'
-
+import { useI18n } from 'vue-i18n'
+const { locale } = useI18n()
 dayjs.extend(duration)
 dayjs.duration(100)
-
 
 const videoSrc = ref()
 const audioSrc = ref()
@@ -71,7 +71,7 @@ const deviceC = {
   reset() {
     treadmillDLLControl.reset()
     sixAxisDLLControl.reset()
-    deviceC.stop()
+    deviceC.pause()
     deviceC.start()
   }
 }
@@ -150,14 +150,18 @@ const getDeviceConfig = async () => {
   res.forEach((element) => {
     deviceConfig.value[element.name] = element
   })
-  console.log('res', res)
+}
 
+const changeLanguage = () => {
+  locale.value = externalParameters.value.Language
 }
 
 onMounted(async () => {
   await getDeviceConfig()
   const options = await window.fileAPI.getOptions()
   externalParameters.value = options
+  console.log('externalParameters.value', externalParameters.value)
+  changeLanguage()
   initDLLControl(deviceConfig.value)
   initMedia()
   countdown.value = externalParameters.value.time
@@ -176,15 +180,13 @@ onMounted(async () => {
       <button @click="deviceC.pause">暂停</button>
       <button @click="deviceC.start">开始</button>
       <button @click="deviceC.stop">退出</button>
-      <!-- <button @click="deviceC.addVal">加速</button>
-      <button @click="deviceC.delVel">减速</button> -->
     </div>
     <div class="top">
-      <img src="./assets/ui/training_nav.png">
+      <img src="./assets/ui/training_nav.png" />
       <div class="top_text">{{ countdownFormat }}</div>
     </div>
     <div class="left">
-      <img src="./assets/ui/training_left.png">
+      <img src="./assets/ui/training_left.png" />
       <div class="left_text">
         <div class="left_text_title">{{ $t('DataGroundTitle') }}</div>
         <div>{{ $t('DataUpDownTitle') }}{{ leftText.rotationX }}mm</div>
