@@ -49,8 +49,8 @@ const deviceC = {
     deviceC.pause()
     window.electron.quit()
   },
-  pause() {
-    transitionManager.pause()
+  pause(type) {
+    if (type !== 'reset') transitionManager.pause()
     videoRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
@@ -72,7 +72,7 @@ const deviceC = {
   reset() {
     treadmillDLLControl.reset()
     sixAxisDLLControl?.reset()
-    deviceC.pause()
+    deviceC.pause('reset')
     deviceC.continue()
   }
 }
