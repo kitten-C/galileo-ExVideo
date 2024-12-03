@@ -6,6 +6,9 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
+import { config } from '../utils'
+// const config = getConfig()
+console.log('config', config);
 
 const { locale } = useI18n()
 dayjs.extend(duration)
@@ -106,8 +109,8 @@ const onComplete = () => {
 const initMedia = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   const id = externalParameters.value.id
-  videoSrc.value = `${up}/D:/Media/video_${id}.mp4`
-  audioSrc.value = `${up}/D:/Media/video_${id}.mp3`
+  videoSrc.value = `${up}/${config.filePath}/video_${id}.mp4`
+  audioSrc.value = `${up}/${config.filePath}/video_${id}.mp3`
 
   videoRef.value?.addEventListener('ended', () => {
     deviceC.reset()

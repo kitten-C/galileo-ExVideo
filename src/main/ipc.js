@@ -2,6 +2,7 @@ import { app, ipcMain } from 'electron'
 import dll from './dll/index'
 import { getDeviceConfig } from './utils/index.js'
 import { publishGameClose } from './matt.js'
+import { getConfig } from './utils'
 
 const isDev = process.env.NODE_ENV === 'development'
 const initIpc = () => {
@@ -18,6 +19,13 @@ const initIpc = () => {
   ipcMain.handle('get-decive-config', async () => {
     try {
       return await getDeviceConfig()
+    } catch (err) {
+      return { success: false, error: err.message }
+    }
+  })
+  ipcMain.handle('get-config', () => {
+    try {
+      return getConfig()
     } catch (err) {
       return { success: false, error: err.message }
     }

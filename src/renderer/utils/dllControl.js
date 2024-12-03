@@ -1,5 +1,8 @@
 import TimeComparator from './timeComparator'
-import config from '../../main/config'
+// import config from '../../main/config'
+import { config } from '.'
+// const config = getConfig
+console.log('config', config);
 
 export class TreadmillDLLControl extends TimeComparator {
   constructor(config) {

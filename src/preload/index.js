@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('fileAPI', {
       throw error
     }
   },
+  getConfig: () => ipcRenderer.invoke('get-config'),
   getOptions: () => ipcRenderer.invoke('get-options'),
   updateDeviceSpeed: (callback) =>
     ipcRenderer.on('update-device-speed', (_event, value) => callback(value)),
