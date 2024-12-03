@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
+
 const { locale } = useI18n()
 dayjs.extend(duration)
 dayjs.duration(100)
@@ -143,6 +144,7 @@ const initUpdaeLeftText = () => {
   })
   window.mqtt.close(() => {
     console.log('window.mqtt.close')
+    deviceC.stop()
   })
 }
 

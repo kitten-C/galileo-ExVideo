@@ -1,6 +1,8 @@
 import { app, ipcMain } from 'electron'
 import dll from './dll/index'
 import { getDeviceConfig } from './utils/index.js'
+import { publishGameClose } from './matt.js'
+
 const isDev = process.env.NODE_ENV === 'development'
 const initIpc = () => {
   ipcMain.on('dll', (event, val) => {
@@ -31,6 +33,7 @@ const initIpc = () => {
     if (isDev) {
       console.log('假装退出了')
     } else {
+      publishGameClose()
       app.quit()
     }
   })

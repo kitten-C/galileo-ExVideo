@@ -1,7 +1,6 @@
 import mqtt from 'mqtt'
 import config from './config'
 import { BrowserWindow } from 'electron'
-
 const client = mqtt.connect(`mqtt://127.0.0.1:${config.mqtt.port}`, config.mqtt)
 
 client.on('connect', () => {})
@@ -16,9 +15,9 @@ client.subscribe('unity/pause', (err) => {
   }
 })
 
-client.subscribe('unity/close', (err) => {
+client.subscribe('game/command/close', (err) => {
   if (!err) {
-    console.log('unity/close')
+    console.log('game/command/close')
   }
 })
 
@@ -27,7 +26,7 @@ setInterval(() => {
 }, 1000)
 
 const obj = {
-  'unity/close': 'on-mqtt-close',
+  'game/command/close': 'on-mqtt-close',
   'unity/continue': 'on-mqtt-continue',
   'unity/pause': 'on-mqtt-pause'
 }
@@ -35,3 +34,7 @@ const obj = {
 client.on('message', (topic, message) => {
   BrowserWindow.getAllWindows()?.[0]?.webContents.send(obj[topic])
 })
+
+export const publishGameClose = () => {
+  client.publish('game/prepareClose')
+}
