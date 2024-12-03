@@ -1,0 +1,80 @@
+{
+  "MocapType": "chingmu",
+  "EmgWebsocket": "ws://127.0.0.1:12900",
+  "BluetoothWebsocket": "ws://127.0.0.1:12903",
+  "ForcePlatformWebsocket": "ws://127.0.0.1:12904",
+  "IntelligentWebsocket": "ws://127.0.0.1:12905",
+
+  "host": "127.0.0.1",
+  "httpPort": 12888,
+  "url": "http://127.0.0.1:12888",
+  "EEG": {
+    "host": "192.168.11.24",
+    "port": 8712
+  },
+  "Physiolab": {
+    "host": "127.0.0.1",
+    "port": 9002
+  },
+
+  "chingmu": {
+    "port": 12001,
+    "oscHost": "127.0.0.1",
+    "oscPort": 12000,
+    "websocket": "ws://127.0.0.1:12902"
+  },
+
+  "hikvision": {
+    "host": "192.168.1.115",
+    "port": 80,
+    "username": "admin",
+    "password": "fftai2015"
+  },
+
+  "recordPath": "D:\\record",
+  "recordUrl": "http://127.0.0.1",
+
+  "frameSyncPort": 12890,
+
+  "Channels": {
+    "recordData": "recordData"
+  },
+  "NoitomWebsocket": "ws://127.0.0.1:12901",
+  "mqtt": {
+    "port": 12997,
+    "username": "galileo",
+    "password": "fftai2015",
+    "resetOnLastDisconnect": true,
+    "resetOnEveryDisconnect": true
+  },
+  "ffi": "koffi",
+  "game": {
+    "basePath": "D:\\games\\"
+  },
+  "lang": "cn",
+  "machineinfo": {
+    "name": "Galileo ExOps",
+    "version": "V1"
+  },
+  "exec": {
+    "start": "",
+    "frontEndLoaded": "",
+    "quit": ""
+  },
+  "sixAxis": {
+    "host": "192.168.1.88",
+    "port": 8080,
+    "poisition": 80,
+    "rotationLimit": 8,
+    "accelerationLimit": 200
+  },
+  "gate": {
+    "host": "192.168.1.98",
+    "port": 8090
+  },
+  "safeService": {
+    "host": "127.0.0.1",
+    "port": 9090,
+    "path": "D:\\Galileo-Safety\\Galileo-Safety.exe"
+  }
+}

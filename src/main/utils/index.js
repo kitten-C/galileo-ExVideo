@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { Command } from 'commander'
+import configPath from '../../../resources/config.json?commonjs-external&asset'
 
 const assetsPath = 'D:\\Media'
 
@@ -115,4 +116,14 @@ export const getOptions = () => {
   global.sharedOptions = options
   console.log('options', options)
   return options
+}
+
+let config
+export const getConfig = () => {
+  if (config) {
+    return config
+  }
+  
+  config = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+  return getConfig()
 }
