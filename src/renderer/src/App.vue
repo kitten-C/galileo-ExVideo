@@ -55,23 +55,23 @@ const deviceC = {
     videoRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
-    treadmillDLLControl.stop()
+    treadmillDLLControl?.stop()
     sixAxisDLLControl?.restore()
   },
   continue() {
     transitionManager.continue()
     videoRef.value.play()
     timer.start()
-    treadmillDLLControl.start()
+    treadmillDLLControl?.start()
   },
   addVal() {
-    treadmillDLLControl.addVal()
+    treadmillDLLControl?.addVal()
   },
   delVel() {
-    treadmillDLLControl.delVel()
+    treadmillDLLControl?.delVel()
   },
   reset() {
-    treadmillDLLControl.reset()
+    treadmillDLLControl?.reset()
     sixAxisDLLControl?.reset()
     deviceC.pause('reset')
     deviceC.continue()
@@ -115,7 +115,8 @@ const initMedia = () => {
 }
 
 const initDLLControl = (_config) => {
-  treadmillDLLControl = new TreadmillDLLControl(_config.treadmill.fileData)
+  _config.treadmill.fileData &&
+    (treadmillDLLControl = new TreadmillDLLControl(_config.treadmill.fileData))
   _config.sixAxis.fileData && (sixAxisDLLControl = new SixAxisDLLControl(_config.sixAxis.fileData))
 }
 
