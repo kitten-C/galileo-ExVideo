@@ -16,7 +16,7 @@ export class TreadmillDLLControl extends TimeComparator {
   }
 
   start() {
-    window.dll({ name: 'treadmillDll', function: 'StartTreadmill', data: [1, 3] })
+    window.dll({ name: 'treadmillDll', function: 'StartTreadmill', data: [0, 3] })
     this.addVal(this.currentSpeed)
   }
 
