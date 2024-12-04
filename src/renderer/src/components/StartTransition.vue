@@ -22,7 +22,7 @@ const { locale } = useI18n()
 const num = ref(3)
 onMounted(() => {
   setInterval(() => {
-    num.value -= 1
+    // num.value -= 1
   }, 1000)
 })
 </script>
@@ -42,14 +42,14 @@ onMounted(() => {
   flex-direction: column;
 
   .text_1 {
-    font-size: 10vw;
-    line-height: 10vw;
+    font-size: 344px;
+    line-height: 344px;
   }
 
   .text_2 {
-    margin-top: 1%;
-    font-size: 1.2vw;
-    line-height: 1.2vw;
+    margin-top: 90px;
+    font-size: 55px;
+    line-height: 55px;
   }
 }
 </style>
