@@ -25,27 +25,25 @@ export default {
   .text {
     position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
   }
 
   .image_pop {
-    width: 540px;
-    height: 540px;
-    top: 50%;
+    height: 1188.2px;
+    top: 611px;
     z-index: 1;
   }
 
   .image_pause {
-    width: 167px;
-    height: 167px;
-    top: 45%;
+    height: 366px;
+    top: 794px;
     z-index: 2;
   }
 
   .text {
     color: #fff;
-    font-size: 32px;
-    top: 55%;
+    font-size: 83px;
+    top: 1210px;
     z-index: 3;
 
   }

@@ -236,7 +236,7 @@ onMounted(async () => {
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
-    height: 9%;
+    height: 196px;
 
     img {
       height: 100%;
@@ -247,7 +247,7 @@ onMounted(async () => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 1.3vw;
+      font-size: 84px;
       color: #fff;
       display: flex;
     }
@@ -258,7 +258,7 @@ onMounted(async () => {
     left: 1%;
     top: 50%;
     transform: translate(0, -50%);
-    height: 50%;
+    height: 907.86px;
 
     img {
       height: 100%;
@@ -270,24 +270,24 @@ onMounted(async () => {
       top: 52%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 0.8vw;
+      font-size: 43px;
       color: #fff;
-      padding-left: 18%;
-      line-height: 1.5vw;
+      padding-left: 40px;
 
       .left_text_title {
-        font-size: 1vw;
-        margin: 4% 0;
+        font-size: 57px;
+        margin: 20px 0;
       }
     }
   }
 
   .bottom {
     position: absolute;
-    bottom: 10%;
+    top: 2164px;
     left: 50%;
     transform: translate(-50%, 0);
     color: #fff;
+    font-size: 65px;
   }
 
   .btns {
@@ -302,7 +302,7 @@ onMounted(async () => {
       padding: 20px;
       margin-left: 20px;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 40px;
     }
   }
 }
