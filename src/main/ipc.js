@@ -1,7 +1,7 @@
 import { app, ipcMain } from 'electron'
 import dll from './dll/index'
 import { getDeviceConfig } from './utils/index.js'
-import { publishGameClose } from './matt.js'
+import { publishGameClose } from './mqtt.js'
 import { getConfig } from './utils'
 
 const isDev = process.env.NODE_ENV === 'development'
