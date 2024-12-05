@@ -51,14 +51,6 @@ class TransitionManager {
   }
   // 移除暂停组件
   continue() {
-    console.log('this.currentApp', this.currentApp)
-    console.log(
-      'this.currentContainer === this.components.pause',
-      this.currentContainer === this.components.pause
-    )
-    console.log('this.currentContainer', this.currentContainer)
-    console.log('this.components.pause', this.components.pause)
-
     if (this.currentApp && this.currentComponent == this.components.pause) {
       this.removeCurrentComponent()
     }

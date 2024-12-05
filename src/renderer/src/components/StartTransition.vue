@@ -22,7 +22,7 @@ const { locale } = useI18n()
 const num = ref(3)
 onMounted(() => {
   setInterval(() => {
-    // num.value -= 1
+    num.value -= 1
   }, 1000)
 })
 </script>
