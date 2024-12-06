@@ -13,13 +13,32 @@ function createWindow() {
       ? prev
       : current
   })
+
+  let baseMainWIndowConfig
+
+  if (process.env.NODE_ENV === 'development') {
+    baseMainWIndowConfig = {
+      y: 0,
+      x: 0,
+      width: largestDisplay.bounds.width,
+      height: 921,
+      autoHideMenuBar: true,
+      fullscreen: false,
+      frame: false
+    }
+  } else {
+    baseMainWIndowConfig = {
+      autoHideMenuBar: true,
+      x: largestDisplay.bounds.x + (largestDisplay.bounds.width - 800) / 2,
+      y: largestDisplay.bounds.y + (largestDisplay.bounds.height - 600) / 2,
+      width: largestDisplay.bounds.width,
+      height: largestDisplay.bounds.height,
+      fullscreen: true
+    }
+  }
+
   const mainWindow = new BrowserWindow({
-    autoHideMenuBar: true,
-    x: largestDisplay.bounds.x + (largestDisplay.bounds.width - 800) / 2,
-    y: largestDisplay.bounds.y + (largestDisplay.bounds.height - 600) / 2,
-    width: largestDisplay.bounds.width,
-    height: largestDisplay.bounds.height,
-    fullscreen: true,
+    ...baseMainWIndowConfig,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
@@ -39,6 +58,7 @@ function createWindow() {
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    mainWindow.webContents.openDevTools()
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
