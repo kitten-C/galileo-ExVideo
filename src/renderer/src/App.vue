@@ -7,8 +7,11 @@ import duration from 'dayjs/plugin/duration'
 import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
 import { config } from '../utils'
-// const config = getConfig()
-console.log('config', config);
+import ShoppingList from './components/211011/ShoppingList.vue'
+import ChoseProduct from './components/211011/ChoseProduct.vue'
+
+
+console.log('config', config)
 
 const { locale } = useI18n()
 dayjs.extend(duration)
@@ -109,7 +112,13 @@ const onComplete = () => {
 const initMedia = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   const id = externalParameters.value.id
-  videoSrc.value = `${up}/${config.filePath}/video_${id}.mp4`
+  console.log('id', id)
+
+  if (id == '211011') {
+    videoSrc.value = `${up}/${config.filePath}/video_${id}_0.mp4`
+  } else {
+    videoSrc.value = `${up}/${config.filePath}/video_${id}.mp4`
+  }
   audioSrc.value = `${up}/${config.filePath}/video_${id}.mp3`
 
   videoRef.value?.addEventListener('ended', () => {
@@ -176,7 +185,7 @@ onMounted(async () => {
   countdown.value = externalParameters.value.time
   timer = new Timer(externalParameters.value.time, 100, handleTime, onComplete)
   initUpdaeLeftText()
-  deviceC.start()
+  // deviceC.start()
 })
 </script>
 
@@ -211,6 +220,8 @@ onMounted(async () => {
     <div class="bottom">
       {{ $t(`${deviceConfig?.base?.fileData?.introduction_name || ''}`) }}
     </div>
+    <!-- <ShoppingList /> -->
+    <ChoseProduct />
   </div>
 </template>
 
@@ -233,6 +244,7 @@ onMounted(async () => {
 
   .top {
     position: absolute;
+    z-index: 999;
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
@@ -288,6 +300,7 @@ onMounted(async () => {
     transform: translate(-50%, 0);
     color: #fff;
     font-size: 65px;
+    z-index: 999;
   }
 
   .btns {
