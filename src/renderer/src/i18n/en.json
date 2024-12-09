@@ -161,5 +161,9 @@
   "TreadmillRunTip": "The platform is about to move. Follow the screen and walk forward!",
   "TrainEndTip2": "Coming to an end, Thanks for the experience",
   "IntroductionP30": "Constructing virtual reality scenarios to simulate the disruption of walking up and down stairs for walking function training",
-  "TrainEndTip3": "Coming to an end, Thanks for visiting"
+  "TrainEndTip3": "Coming to an end, Thanks for visiting",
+  "Bottle": "Bottle",
+  "Piece": "Piece",
+  "Box": "Box",
+  "Portion": "Portion"
 }

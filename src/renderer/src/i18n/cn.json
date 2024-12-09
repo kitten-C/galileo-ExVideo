@@ -161,5 +161,9 @@
   "TreadmillRunTip": "跑台即将启动，请跟随画面向前行走",
   "TrainEndTip2": "即将结束，感谢体验",
   "IntroductionP30": "构建虚拟现实的场景，模拟上下楼梯的干扰，进行步行功能的训练",
-  "TrainEndTip3": "即将结束，感谢参观"
+  "TrainEndTip3": "即将结束，感谢参观",
+  "Bottle": "瓶",
+  "Piece": "支",
+  "Box": "盒",
+  "Portion": "份"
 }
