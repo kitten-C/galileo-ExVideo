@@ -145,6 +145,7 @@ onMounted(() => {
       position: absolute;
       left: 762.3px;
       top: 84px;
+      filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.5));
     }
     .text {
       font-size: 50px;

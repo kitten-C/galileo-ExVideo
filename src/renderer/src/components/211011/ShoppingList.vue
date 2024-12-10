@@ -33,7 +33,7 @@ const list = [
   { img: img4, text: t('Strawberry') },
   { img: img5, text: t('Pepper') },
   { img: img6, text: t('Pickles') },
-  { img: img7, text: t('Fish') }
+  { img: img7, text: t('Cake') }
 ]
 </script>
 <style lang="scss">
@@ -91,6 +91,7 @@ const list = [
       .item_img {
         height: 300px;
         z-index: 3;
+        filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.5));
       }
       .item_text {
         font-size: 40px; 

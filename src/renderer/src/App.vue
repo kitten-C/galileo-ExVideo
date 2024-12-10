@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n'
 import { config } from '../utils'
 import ShoppingList from './components/211011/ShoppingList.vue'
 import ChoseProduct from './components/211011/ChoseProduct.vue'
+import ProgressBar from './components/ProgressBar.vue'
 
 
 console.log('config', config)
@@ -222,6 +223,7 @@ onMounted(async () => {
     </div>
     <!-- <ShoppingList /> -->
     <ChoseProduct />
+    <ProgressBar />
   </div>
 </template>
 
