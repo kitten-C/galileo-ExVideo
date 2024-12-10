@@ -59,11 +59,6 @@ onMounted(() => {
   height: 100%;
   width: 100%;
   z-index: 888;
-  canvas {
-    display: block;
-    margin: 0 auto;
-    // background: white;
-  }
   .bgc,
   .bgc1,
   .bgs {
@@ -95,7 +90,16 @@ onMounted(() => {
     }
     .product {
       height: 307px;
-      // width: 307px;
+      position: absolute;
+      left: 762.3px;
+      top: 84px;
+    }
+    .text {
+      font-size: 50px;
+      color: #ffffff;
+      position: absolute;
+      left: 828px;
+      top: 429px;
     }
   }
 
