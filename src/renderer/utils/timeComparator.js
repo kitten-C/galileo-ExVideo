@@ -1,5 +1,7 @@
 class TimeComparator {
   constructor(config) {
+    console.log('config', config);
+    
     if (!Array.isArray(config) || config.some((item) => typeof item.time === 'undefined')) {
       throw new Error(`数据必须是一个包含time字段的对象数组 ${config}`)
     }
@@ -15,6 +17,8 @@ class TimeComparator {
     const currentItem = this.config[this.index]
     if (time >= currentItem.time) {
       this.index++
+      
+      console.log('compare', currentItem);
       return { success: true, code: 200, data: currentItem }
     } else {
       return {

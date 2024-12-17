@@ -7,10 +7,8 @@ import duration from 'dayjs/plugin/duration'
 import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
 import { config } from '../utils'
-import ShoppingList from './components/211011/ShoppingList.vue'
-import ChoseProduct from './components/211011/ChoseProduct.vue'
-import ProgressBar from './components/ProgressBar.vue'
-
+import Supermarket from './components/supermarket/index.vue'
+import TimeComparator from '../utils/timeComparator'
 
 console.log('config', config)
 
@@ -62,7 +60,7 @@ const deviceC = {
     videoRef.value.pause()
     timer.pause()
     console.log('videoRef.value?.currentTime', videoRef.value?.currentTime)
-    treadmillDLLControl?.stop()
+    treadmillDLLControl?.pause()
     sixAxisDLLControl?.restore()
   },
   continue() {
@@ -89,8 +87,8 @@ const handleTime = (time, untime) => {
   countdown.value = time
   showTimeText.value = untime / 1000
   const videoCurrentTime = videoRef.value?.currentTime
-  const treadmillRes = treadmillDLLControl.handleCompare(videoCurrentTime)
-  const sixAxisRes = sixAxisDLLControl?.handleCompare(videoCurrentTime)
+  const treadmillRes = treadmillDLLControl.handleCompare(showTimeText.value)
+  const sixAxisRes = sixAxisDLLControl?.handleCompare(showTimeText.value)
   // console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
   if (sixAxisRes?.success) {
     const sixAxisData = sixAxisRes.data
@@ -174,6 +172,34 @@ const getDeviceConfig = async () => {
 const changeLanguage = () => {
   locale.value = externalParameters.value.Language
 }
+const configList = [
+  { time: 33, video: 'video_211011_1' },
+  { time: 97, video: 'video_211011_2' },
+  { time: 124, video: 'video_211011_3' },
+  { time: 194, video: 'video_211011_4' },
+  { time: 291, video: 'video_211011_5' },
+  { time: 355, video: 'video_211011_6' },
+  { time: 421, video: 'video_211011_7' },
+  { time: 451, video: 'video_211011_8' },
+  { time: 506, video: 'video_211011_9' },
+  { time: 520, video: 'video_211011_10' },
+  { time: 532, video: 'video_211011_10' }
+]
+const timeCoparator = new TimeComparator(configList)
+watchEffect(() => {
+  // console.log('showTimeText', showTimeText.value)
+  const id = externalParameters.value.id
+  if (id != '211011') return
+  const res = timeCoparator.compare(showTimeText.value)
+  // console.log('res', res)
+  if (res.success) {
+    const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
+    videoSrc.value = `${up}/${config.filePath}/${res.data.video}.mp4`
+    nextTick(() => {
+      videoRef.value.play()
+    })
+  }
+})
 
 onMounted(async () => {
   await getDeviceConfig()
@@ -192,7 +218,7 @@ onMounted(async () => {
 
 <template>
   <div class="main">
-    <video ref="videoRef" :src="videoSrc"></video>
+    <video ref="videoRef" :src="videoSrc" :loop="false"></video>
     <audio ref="audioRef" :src="audioSrc" loop></audio>
     <div class="btns">
       <button @click="deviceC.continue">继续</button>
@@ -221,9 +247,7 @@ onMounted(async () => {
     <div class="bottom">
       {{ $t(`${deviceConfig?.base?.fileData?.introduction_name || ''}`) }}
     </div>
-    <!-- <ShoppingList /> -->
-    <ChoseProduct />
-    <ProgressBar />
+    <Supermarket :time="showTimeText" v-if="externalParameters.id == 211011" />
   </div>
 </template>
 
@@ -269,6 +293,7 @@ onMounted(async () => {
 
   .left {
     position: absolute;
+    z-index: 999;
     left: 1%;
     top: 50%;
     transform: translate(0, -50%);

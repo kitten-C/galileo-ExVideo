@@ -2,7 +2,7 @@ import TimeComparator from './timeComparator'
 // import config from '../../main/config'
 import { config } from '.'
 // const config = getConfig
-console.log('config', config);
+console.log('config', config)
 
 export class TreadmillDLLControl extends TimeComparator {
   constructor(config) {
@@ -21,13 +21,19 @@ export class TreadmillDLLControl extends TimeComparator {
   }
 
   stop() {
-    window.dll({ name: 'treadmillDll', function: 'StopTreadmill', data: [3] })
+    this.pause()
+    this.currentSpeed = 0
     console.log('this.currentSpeed', this.currentSpeed)
+  }
+
+  pause() {
+    window.dll({ name: 'treadmillDll', function: 'StopTreadmill', data: [3] })
   }
 
   addVal(num = 100) {
     if (num === 0) return
     window.dll({ name: 'treadmillDll', function: 'AddVel', data: [num, 3] })
+    this.currentSpeed += num
   }
 
   delVel(num = 100) {
@@ -38,9 +44,15 @@ export class TreadmillDLLControl extends TimeComparator {
   handleCompare(time) {
     const res = this.compare(time)
     if (res.success) {
-      const { data } = res
-      this.currentSpeed += data.speedup
-      window.dll({ name: 'treadmillDll', function: 'AddVel', data: [data.speedup, 3] })
+      const {
+        data: { speedup, forward }
+      } = res
+      if (forward === 1) {
+        this.addVal(speedup)
+      }
+      if (forward === 0) {
+        this.stop()
+      }
     }
     return res
   }

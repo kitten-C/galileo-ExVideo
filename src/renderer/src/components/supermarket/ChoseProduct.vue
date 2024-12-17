@@ -89,7 +89,7 @@ const typeObj = {
 }
 
 const useObj = computed(() => {
-  const type = props.type || 'cake'
+  const type = props.type || 'bellPepper'
   return typeObj[type]
 })
 
@@ -126,20 +126,24 @@ onMounted(() => {
     height: 100%;
     background-color: #000000cc;
   }
+
   .bgc1 {
     z-index: 3;
     clip-path: xywh(0 0 6710px 100%);
     transition: clip-path 5s linear;
   }
+
   .pointto_wrap {
     position: absolute;
     height: 570px;
     width: 1200px;
     z-index: 2;
+
     .pointto {
       width: 100%;
       height: 100%;
     }
+
     .product {
       height: 307px;
       position: absolute;
@@ -147,6 +151,7 @@ onMounted(() => {
       top: 84px;
       filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.5));
     }
+
     .text {
       font-size: 50px;
       color: #ffffff;
@@ -156,19 +161,24 @@ onMounted(() => {
     }
   }
 }
+
 .chose_product_bellPepper_init {
+
   .bgc,
   .bgc1 {
     left: -4939px;
   }
+
   .bgc1 {
     clip-path: xywh(4939px 0 6710px 100%);
   }
 }
+
 .chose_product_bellPepper {
   .bgc1 {
     clip-path: xywh(7274px 892px 313px 926px round 20px);
   }
+
   .pointto_wrap {
     left: 2628px;
     top: 688px;
@@ -179,6 +189,7 @@ onMounted(() => {
   .bgc1 {
     clip-path: xywh(239px 892px 773px 926px round 20px);
   }
+
   .pointto_wrap {
     left: 1000px;
     top: 950px;
@@ -189,96 +200,123 @@ onMounted(() => {
   .bgc1 {
     clip-path: xywh(44px 903px 1269px 569px round 20px);
   }
+
   .pointto_wrap {
     left: 1315px;
     top: 713px;
+
     .product {
       left: 650px;
     }
   }
 }
+
 .chose_product_pickles_init {
+
   .bgc,
   .bgc1 {
     left: -6674px;
   }
+
   .bgc1 {
     clip-path: xywh(6674px 0 6710px 100%);
   }
 }
+
 .chose_product_pickles {
   .bgc1 {
     clip-path: xywh(9917px 768px 512px 1163px round 20px);
   }
+
   .pointto_wrap {
     left: 3758px;
     top: 610px;
   }
 }
+
 .chose_product_toothbrush_init {
+
   .bgc,
   .bgc1 {
     left: -2826px;
   }
+
   .bgc1 {
     clip-path: xywh(2826px 0 6710px 100%);
   }
 }
+
 .chose_product_toothbrush {
   .bgc1 {
     clip-path: xywh(6040px 699px 765px 346px round 20px);
   }
+
   .pointto_wrap {
     left: 3982px;
     top: 390px;
+
     .product {
       left: 650px;
     }
   }
 }
+
 .chose_product_toothpaste_init {
+
   .bgc,
   .bgc1 {
     left: -2826px;
   }
+
   .bgc1 {
     clip-path: xywh(2826px 0 6710px 100%);
   }
 }
+
 .chose_product_toothpaste {
   .bgc1 {
     clip-path: xywh(9333px 1204px 288px 638px round 20px);
   }
+
   .pointto_wrap {
     left: 5323px;
     top: 890px;
+
     .pointto {
       transform: rotateY(180deg);
     }
+
     .product {
       left: 90px;
     }
+
     .text {
       left: 185px;
     }
   }
 }
+
 .chose_product_cake_init {
+
   .bgc,
   .bgc1 {
     left: -3337px;
   }
+
   .bgc1 {
     clip-path: xywh(3337px 0 6710px 100%);
   }
 }
+
 .chose_product_cake {
   .bgc1 {
     clip-path: xywh(5991px 806px 404px 854px round 20px);
   }
+
   .pointto_wrap {
     left: 3054px;
     top: 674px;
+
     .product {
       left: 650px;
     }
