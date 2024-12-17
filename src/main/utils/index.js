@@ -55,14 +55,15 @@ export const getDeviceConfig = async () => {
           fileData = fileArr.map(parseString)
 
           if (name === 'sixAxis') {
-            let six_axis_accPre
-            let angle_scalePre
-            let acc_scalePre
+            let six_axis_accPre = 1
+            let angle_scalePre = [1, 1, 1]
+            let acc_scalePre = [1, 1, 1]
 
             fileData = fileData.map((v) => {
               if (v.six_axis_acc) six_axis_accPre = v.six_axis_acc
               if (v.angle_scale) angle_scalePre = v.angle_scale
               if (v.acc_scale) acc_scalePre = v.acc_scale
+
               const angle = v.angle.map((vv, ii) => {
                 return vv * angle_scalePre[ii]
               })
@@ -123,7 +124,7 @@ export const getConfig = () => {
   if (config) {
     return config
   }
-  
+
   config = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
   return getConfig()
 }
