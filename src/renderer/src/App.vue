@@ -126,12 +126,12 @@ const initMedia = () => {
     videoSrc.value = `${up}/${config.filePath}/video_${id}_0.mp4`
   } else {
     videoSrc.value = `${up}/${config.filePath}/video_${id}.mp4`
+    videoRef.value?.addEventListener('ended', () => {
+      deviceC.reset()
+    })
   }
   audioSrc.value = `${up}/${config.filePath}/video_${id}.mp3`
 
-  videoRef.value?.addEventListener('ended', () => {
-    deviceC.reset()
-  })
 }
 
 const initDLLControl = (_config) => {

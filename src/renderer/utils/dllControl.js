@@ -63,7 +63,6 @@ export class TreadmillDLLControl extends TimeComparator {
       const {
         data: { speedup, forward }
       } = res
-      debugger
       if (forward === 1) {
         this.addVal(speedup)
       }
