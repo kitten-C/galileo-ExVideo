@@ -2,7 +2,7 @@
   <div>
     <ShoppingList v-if="shoppingListShow" />
     <ChoseProduct v-if="choseProductShow" :type="choseProductType" />
-    <ProgressBar />
+    <ProgressBar :time="props.time"/>
     <ProductItem v-if="productItemShow" :types="productItemTypes" />
     <BlackTransition v-if="blackTransitionShow" :spiderSense="spiderSense" />
     <VoiceBroadcast :time="props.time" />
