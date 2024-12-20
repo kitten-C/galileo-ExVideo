@@ -54,7 +54,6 @@ treadmillDll.fun.setStartMark()
 
 let cb1 = koffi.register(callback, koffi.pointer(TreadmillV2DataCallback))
 const res = InitTreadmill(cb1)
-console.log('treadmillDllres', res)
 
 const left = Buffer.allocUnsafe(8) // double 占 8 字节
 const right = Buffer.allocUnsafe(8)

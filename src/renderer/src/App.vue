@@ -87,8 +87,6 @@ const deviceC = {
 }
 
 const handleTime = (time, untime, onetime) => {
-  console.log('onetime', time, untime, onetime);
-  
   countdown.value = time
   showTimeText.value = untime / 1000
 
@@ -123,8 +121,6 @@ const onComplete = () => {
 const initMedia = () => {
   const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
   const id = externalParameters.value.id
-  console.log('id', id)
-
   if (id == '211011') {
     videoSrc.value = `${up}/${config.filePath}/video_${id}_0.mp4`
   } else {
@@ -134,7 +130,6 @@ const initMedia = () => {
     })
   }
   audioSrc.value = `${up}/${config.filePath}/video_${id}.mp3`
-
 }
 
 const initDLLControl = (_config) => {
@@ -169,6 +164,10 @@ const initUpdaeLeftText = () => {
   window.mqtt.close(() => {
     console.log('window.mqtt.close')
     deviceC.stop()
+  })
+  window.mqtt.start(() => {
+    console.log('window.mqtt.close')
+    deviceC.start()
   })
 }
 

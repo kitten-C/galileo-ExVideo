@@ -31,5 +31,6 @@ contextBridge.exposeInMainWorld('fileAPI', {
 contextBridge.exposeInMainWorld('mqtt', {
   continue: (callback) => ipcRenderer.on('on-mqtt-continue', (_event, value) => callback(value)),
   pause: (callback) => ipcRenderer.on('on-mqtt-pause', (_event, value) => callback(value)),
-  close: (callback) => ipcRenderer.on('on-mqtt-close', (_event, value) => callback(value))
+  close: (callback) => ipcRenderer.on('on-mqtt-close', (_event, value) => callback(value)),
+  start: (callback) => ipcRenderer.on('on-mqtt-start', (_event, value) => callback(value))
 })

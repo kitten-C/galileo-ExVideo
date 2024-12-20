@@ -11,9 +11,6 @@ const initIpc = () => {
     try {
       
       val.res = dll[val.name].fun[val.function](...val.data)
-      if (val.name === 'sixAxisDll') {
-        console.log('dll', val);
-      }
       // console.info(`dll-${val.name}-val`, val)
     } catch (error) {
       console.error('dll err:', error)
