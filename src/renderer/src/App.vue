@@ -82,17 +82,20 @@ const deviceC = {
     sixAxisDLLControl?.reset()
     deviceC.pause('reset')
     deviceC.continue()
+    timer.reset()
   }
 }
 
-const handleTime = (time, untime) => {
+const handleTime = (time, untime, onetime) => {
+  console.log('onetime', time, untime, onetime);
+  
   countdown.value = time
   showTimeText.value = untime / 1000
 
-  let timeParam = showTimeText.value
+  let timeParam = onetime
 
   if (externalParameters.value.id == '211011') {
-    timeParam = showTimeText.value - 34
+    timeParam = onetime - 34
   }
 
   const videoCurrentTime = videoRef.value?.currentTime
@@ -234,6 +237,7 @@ onMounted(async () => {
       <button @click="deviceC.pause">暂停</button>
       <button @click="deviceC.start">开始</button>
       <button @click="deviceC.stop">退出</button>
+      <button @click="timer.reset()">重置</button>
     </div>
     <div class="top">
       <img src="./assets/ui/training_nav.png" />

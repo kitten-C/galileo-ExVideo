@@ -9,17 +9,28 @@ class Timer {
     this.timerId = null // 定时器 ID
     this.updateId = null // 实时更新 ID
     this.startTime = null // 开始时间
+    this.loopStartTime = null // 当前循环的起始时间
+    this.loopElapsedPaused = 0 // 暂停时保存当前循环已用时间
+    this.isPaused = false // 是否处于暂停状态
   }
 
   start() {
     if (this.timerId) return // 如果已经在计时，直接返回
 
-    this.startTime = Date.now()
+    const now = Date.now()
+    this.startTime = now
+    if (this.isPaused) {
+      this.loopStartTime = now - this.loopElapsedPaused // 恢复循环起始时间
+    } else if (!this.loopStartTime) {
+      this.loopStartTime = now // 初始化循环起始时间
+    }
+
+    this.isPaused = false
+    this.loopElapsedPaused = 0 // 清除暂停累计时间
+
     this.timerId = setTimeout(() => {
-      // this.remainingTime = 0
-      // this.stopUpdates()
       this.onComplete()
-    }, this.remainingTime - 5700)
+    }, this.remainingTime)
 
     this.startUpdates()
   }
@@ -29,16 +40,26 @@ class Timer {
 
     clearTimeout(this.timerId)
     this.timerId = null
-    this.remainingTime -= Date.now() - this.startTime
+
+    const now = Date.now()
+    this.remainingTime -= now - this.startTime
+    if (this.loopStartTime) {
+      this.loopElapsedPaused += now - this.loopStartTime // 累加暂停前的循环时间
+    }
+
+    this.loopStartTime = null // 暂停后清除循环起始时间
+    this.isPaused = true // 标记为暂停状态
     this.stopUpdates()
   }
 
   startUpdates() {
     this.stopUpdates() // 防止重复设置
     const fnT = () => {
-      const elapsed = Date.now() - this.startTime
+      const now = Date.now()
+      const elapsed = now - this.startTime
       const currentRemaining = Math.max(this.remainingTime - elapsed, 0)
-      this.onUpdate(currentRemaining, this.duration - currentRemaining)
+      const loopElapsed = this.loopStartTime ? now - this.loopStartTime : this.loopElapsedPaused // 当前循环已用时间
+      this.onUpdate(currentRemaining, this.duration - currentRemaining, loopElapsed)
     }
     fnT()
     this.updateId = setInterval(fnT, this.frequency)
@@ -51,10 +72,17 @@ class Timer {
     }
   }
 
+  resetLoopTime() {
+    this.loopStartTime = Date.now() // 重置循环起始时间
+    this.loopElapsedPaused = 0 // 清除暂停累计时间
+    this.isPaused = false // 重置暂停状态
+  }
+
   reset(newDuration = this.duration) {
     this.pause()
-    this.remainingTime = newDuration
-    this.startTime = null
+    // this.remainingTime = newDuration
+    // this.startTime = null
+    this.resetLoopTime() // 重置循环时间
   }
 }
 
