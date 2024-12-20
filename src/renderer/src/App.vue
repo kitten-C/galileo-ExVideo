@@ -53,7 +53,9 @@ const deviceC = {
     await transitionManager.end()
     console.log('stop transitionManager done')
     deviceC.pause()
-    window.electron.quit()
+    nextTick(() => {
+      window.electron.quit()
+    })
   },
   pause(type) {
     if (type !== 'reset') transitionManager.pause()
@@ -67,7 +69,7 @@ const deviceC = {
     transitionManager.continue()
     videoRef.value.play()
     timer.start()
-    treadmillDLLControl?.start()
+    treadmillDLLControl?.continue()
   },
   addVal() {
     treadmillDLLControl?.addVal()
@@ -86,9 +88,16 @@ const deviceC = {
 const handleTime = (time, untime) => {
   countdown.value = time
   showTimeText.value = untime / 1000
+
+  let timeParam = showTimeText.value
+
+  if (externalParameters.value.id == '211011') {
+    timeParam = showTimeText.value - 34
+  }
+
   const videoCurrentTime = videoRef.value?.currentTime
-  const treadmillRes = treadmillDLLControl.handleCompare(showTimeText.value)
-  const sixAxisRes = sixAxisDLLControl?.handleCompare(showTimeText.value)
+  const treadmillRes = treadmillDLLControl.handleCompare(timeParam)
+  const sixAxisRes = sixAxisDLLControl?.handleCompare(timeParam)
   // console.log('handleTime!!!', untime, videoCurrentTime, treadmillRes, sixAxisRes)
   if (sixAxisRes?.success) {
     const sixAxisData = sixAxisRes.data
@@ -173,7 +182,7 @@ const changeLanguage = () => {
   locale.value = externalParameters.value.Language
 }
 const configList = [
-  { time: 33, video: 'video_211011_1' },
+  { time: 35, video: 'video_211011_1' },
   { time: 97, video: 'video_211011_2' },
   { time: 124, video: 'video_211011_3' },
   { time: 194, video: 'video_211011_4' },

@@ -18,7 +18,7 @@ class TimeComparator {
     if (time >= currentItem.time) {
       this.index++
       
-      console.log('compare', currentItem);
+      // console.log('compare', currentItem);
       return { success: true, code: 200, data: currentItem }
     } else {
       return {
