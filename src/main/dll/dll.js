@@ -1,16 +1,16 @@
 import koffi from 'koffi'
-import path from 'path'
-import { app } from 'electron'
-const isDev = process.env.NODE_ENV === 'development'
-const getDllPath = (filename) => {
-  return isDev
-    ? path.resolve(__dirname, '../../resources/dll', filename)
-    : path.resolve(path.dirname(app.getAppPath()), 'app.asar.unpacked/resources/dll', filename)
-}
+// import path from 'path'
+// import { app } from 'electron'
+// const isDev = process.env.NODE_ENV === 'development'
+// const getDllPath = (filename) => {
+//   return isDev
+//     ? path.resolve(__dirname, '../../resources/dll', filename)
+//     : path.resolve(path.dirname(app.getAppPath()), 'app.asar.unpacked/resources/dll', filename)
+// }
 class Dll {
   constructor(parameters) {
-    const dllPath = getDllPath(parameters.filename)
-    this.lib = koffi.load(dllPath)
+    // const dllPath = getDllPath(parameters.filename)
+    this.lib = koffi.load(parameters.filePath)
     this.fun = {}
     this.init(parameters.config)
   }

@@ -1,8 +1,7 @@
 import Dll from './dll'
 import koffi from 'koffi'
 import { BrowserWindow } from 'electron'
-
-const filename = 'treadmill/ComAPI_TCP.dll'
+import filePath from '../../../resources/dll/ComAPI_TCP.dll?asset&asarUnpack'
 
 const config = {
   InitTreadmill: ['int', []],
@@ -17,7 +16,7 @@ const config = {
   setWeight: ['int', ['double']]
 }
 
-const treadmillDll = new Dll({ filename, config })
+const treadmillDll = new Dll({ config, filePath })
 
 const callback = (
   nodeNum,

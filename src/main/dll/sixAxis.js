@@ -1,6 +1,5 @@
 import Dll from './dll'
-
-const filename = 'treadmill/SixaxisDll.dll'
+import filePath from '../../../resources/dll/SixaxisDll.dll?asset&asarUnpack'
 
 const config = {
   Connect: [
@@ -28,6 +27,6 @@ const config = {
   ]
 }
 
-const sixAxisDll = new Dll({ filename, config })
+const sixAxisDll = new Dll({ config, filePath })
 
 export default sixAxisDll

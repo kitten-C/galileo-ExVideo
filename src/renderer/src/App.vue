@@ -232,6 +232,7 @@ onMounted(async () => {
     <video ref="videoRef" :src="videoSrc" :loop="false"></video>
     <audio ref="audioRef" :src="audioSrc" loop></audio>
     <div class="btns">
+      <button @click="deviceC.start">开始</button>
       <button @click="deviceC.continue">继续</button>
       <button @click="deviceC.pause">暂停</button>
       <button @click="deviceC.start">开始</button>
