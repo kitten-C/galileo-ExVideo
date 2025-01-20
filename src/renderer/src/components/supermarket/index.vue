@@ -2,7 +2,7 @@
   <div>
     <ShoppingList v-if="shoppingListShow" />
     <ChoseProduct v-if="choseProductShow" :type="choseProductType" />
-    <ProgressBar :time="props.time"/>
+    <ProgressBar :time="props.time" :list="progressBarList" :configList="progressBarConfigList" />
     <ProductItem v-if="productItemShow" :types="productItemTypes" />
     <BlackTransition v-if="blackTransitionShow" :spiderSense="spiderSense" />
     <VoiceBroadcast :time="props.time" />
@@ -15,11 +15,20 @@ import ProgressBar from '../ProgressBar.vue'
 import ProductItem from './ProductItem.vue'
 import VoiceBroadcast from './VoiceBroadcast.vue'
 import BlackTransition from '../BlackTransition.vue'
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { inject, nextTick, onMounted, provide, ref, watchEffect } from 'vue'
 import TimeComparator from '../../../utils/timeComparator'
+import { useI18n } from 'vue-i18n'
+import img1 from '../../assets/ui/product/oil.png'
+import img2 from '../../assets/ui/product/toothbrush.png'
+import img3 from '../../assets/ui/product/toothpaste.png'
+import img4 from '../../assets/ui/product/strawberry.png'
+import img5 from '../../assets/ui/product/bellPepper.png'
+import img6 from '../../assets/ui/product/pickles.png'
+import img7 from '../../assets/ui/product/cake.png'
+const { t } = useI18n({})
 
 const props = defineProps(['time'])
-
+const mainProvide = inject('mainProvide')
 const shoppingListShow = ref(true)
 const choseProductShow = ref(false)
 const productItemShow = ref(false)
@@ -28,6 +37,27 @@ const blackTransitionShow = ref(false)
 const productItemTypes = ref([])
 const choseProductType = ref('')
 const spiderSense = ref(Math.random())
+
+const resetFunList = []
+
+const pushResetFunList = (fn) => {
+  resetFunList.push(fn)
+}
+
+const reset = () => {
+  try {
+    resetFunList.forEach((v) => {
+      v()
+    })
+    nextTick(() => {
+      progressBarList.value.forEach((v) => {
+        v.status = 0
+      })
+    })
+  } catch (error) {
+    console.error('reset >>', error)
+  }
+}
 
 const configList = [
   { time: 34, comp: 'BlackTransition' },
@@ -66,24 +96,22 @@ const configList = [
   { time: 487, comp: 'ChoseProduct', option: 'cake', action: 'show' },
   { time: 502, comp: 'ChoseProduct', action: 'unshow' },
   { time: 505, comp: 'BlackTransition' },
-  { time: 519, comp: 'BlackTransition' }
+  { time: 519, comp: 'BlackTransition' },
+  { time: 540, comp: 'ShoppingList' },
+  { time: 540, action: 'reset', comp: 'reset' }
 ]
-const configList2 = [
-  { time: 32, video: 'video_211011_1' },
-  { time: 97, video: 'video_211011_2' },
-  { time: 124, video: 'video_211011_3' },
-  { time: 175, video: 'video_211011_3', action: 'stop' },
-  { time: 194, video: 'video_211011_4' },
-  { time: 260, video: 'video_211011_4', action: 'stop' },
-  { time: 291, video: 'video_211011_5' },
-  { time: 355, video: 'video_211011_6' },
-  { time: 421, video: 'video_211011_7' },
-  { time: 451, video: 'video_211011_8' },
-  { time: 506, video: 'video_211011_9' },
-  { time: 520, video: 'video_211011_10' },
-  { time: 532, video: 'video_211011_10' }
-]
-const configList3 = [
+
+const progressBarList = ref([
+  { img: img1, option: 'oil', text: t('Oil'), status: 0 },
+  { img: img2, option: 'toothpaste', text: t('AdultToothbrush'), status: 0 },
+  { img: img3, option: 'toothbrush', text: t('ChildToothbrush'), status: 0 },
+  { img: img4, option: 'strawberry', text: t('Strawberry'), status: 0 },
+  { img: img5, option: 'bellPepper', text: t('Pepper'), status: 0 },
+  { img: img6, option: 'pickles', text: t('Pickles'), status: 0 },
+  { img: img7, option: 'cake', text: t('Cake'), status: 0 }
+])
+
+const progressBarConfigList = [
   { time: 187, type: 'down', option: 'oil' },
   { time: 271, type: 'down', option: 'toothpaste' },
   { time: 284, type: 'down', option: 'toothbrush' },
@@ -92,6 +120,7 @@ const configList3 = [
   { time: 444, type: 'down', option: 'pickles' },
   { time: 502, type: 'down', option: 'cake' }
 ]
+
 const timeCoparator = new TimeComparator(configList)
 const actionFn = {
   unshow: {
@@ -118,6 +147,14 @@ const actionFn = {
       blackTransitionShow.value === false && (blackTransitionShow.value = true)
       spiderSense.value = Math.random()
     }
+  },
+  reset: {
+    reset: () => {
+      console.log('supermarket reset')
+
+      reset()
+      mainProvide.deviceC.reset()
+    }
   }
 }
 watchEffect(() => {
@@ -130,5 +167,9 @@ watchEffect(() => {
   }
 })
 onMounted(() => {})
+
+provide('supermarket', {
+  pushResetFunList
+})
 </script>
 <style lang="scss"></style>

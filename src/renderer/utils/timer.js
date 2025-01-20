@@ -58,7 +58,7 @@ class Timer {
       const now = Date.now()
       const elapsed = now - this.startTime
       const currentRemaining = Math.max(this.remainingTime - elapsed, 0)
-      const loopElapsed = this.loopStartTime ? now - this.loopStartTime : this.loopElapsedPaused // 当前循环已用时间
+      const loopElapsed = (this.loopStartTime ? now - this.loopStartTime : this.loopElapsedPaused) / 1000 // 当前循环已用时间
       this.onUpdate(currentRemaining, this.duration - currentRemaining, loopElapsed)
     }
     fnT()

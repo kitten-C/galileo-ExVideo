@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, onMounted, ref, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, provide, ref, watchEffect } from 'vue'
 import Timer from '../utils/timer'
 import { TreadmillDLLControl, SixAxisDLLControl } from '../utils/dLLControl'
 import dayjs from 'dayjs'
@@ -8,6 +8,7 @@ import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
 import { config } from '../utils'
 import Supermarket from './components/supermarket/index.vue'
+import centuryPark from './components/centuryPark/index.vue' 
 import TimeComparator from '../utils/timeComparator'
 
 console.log('config', config)
@@ -22,6 +23,7 @@ const videoRef = ref()
 const audioRef = ref()
 const showTimeText = ref(0)
 const countdown = ref(0)
+const onetimeRef = ref(0)
 const leftText = ref({
   speed: 0,
   distance: 0,
@@ -40,6 +42,21 @@ const externalParameters = ref({})
 const countdownFormat = computed(() => {
   return dayjs.duration(countdown.value).format('HH:mm:ss')
 })
+const configList = [
+  { time: 35, video: 'video_211011_1' },
+  { time: 97, video: 'video_211011_2' },
+  { time: 124, video: 'video_211011_3' },
+  { time: 194, video: 'video_211011_4' },
+  { time: 291, video: 'video_211011_5' },
+  { time: 355, video: 'video_211011_6' },
+  { time: 421, video: 'video_211011_7' },
+  { time: 451, video: 'video_211011_8' },
+  { time: 506, video: 'video_211011_9' },
+  { time: 520, video: 'video_211011_10' },
+  { time: 540, video: 'video_211011_0' }
+]
+const timeCoparator = new TimeComparator(configList)
+
 const deviceC = {
   async start() {
     console.log('start')
@@ -78,20 +95,26 @@ const deviceC = {
     treadmillDLLControl?.delVel()
   },
   reset() {
+
+    console.log('devide reset');
+    timer.pause()
     treadmillDLLControl?.reset()
     sixAxisDLLControl?.reset()
     deviceC.pause('reset')
-    deviceC.continue()
+    timeCoparator.reset()
     timer.reset()
+    deviceC.continue()
   }
 }
 
 const handleTime = (time, untime, onetime) => {
+  
   countdown.value = time
   showTimeText.value = untime / 1000
+  // console.log('time, untime, onetime', time, untime, onetime, showTimeText.value);
 
   let timeParam = onetime
-
+  onetimeRef.value = onetime
   if (externalParameters.value.id == '211011') {
     timeParam = onetime - 34
   }
@@ -183,25 +206,12 @@ const getDeviceConfig = async () => {
 const changeLanguage = () => {
   locale.value = externalParameters.value.Language
 }
-const configList = [
-  { time: 35, video: 'video_211011_1' },
-  { time: 97, video: 'video_211011_2' },
-  { time: 124, video: 'video_211011_3' },
-  { time: 194, video: 'video_211011_4' },
-  { time: 291, video: 'video_211011_5' },
-  { time: 355, video: 'video_211011_6' },
-  { time: 421, video: 'video_211011_7' },
-  { time: 451, video: 'video_211011_8' },
-  { time: 506, video: 'video_211011_9' },
-  { time: 520, video: 'video_211011_10' },
-  { time: 532, video: 'video_211011_10' }
-]
-const timeCoparator = new TimeComparator(configList)
+
 watchEffect(() => {
   // console.log('showTimeText', showTimeText.value)
   const id = externalParameters.value.id
   if (id != '211011') return
-  const res = timeCoparator.compare(showTimeText.value)
+  const res = timeCoparator.compare(onetimeRef.value)
   // console.log('res', res)
   if (res.success) {
     const up = import.meta.env.MODE === 'development' ? '/@fs' : 'file://'
@@ -225,6 +235,10 @@ onMounted(async () => {
   initUpdaeLeftText()
   // deviceC.start()
 })
+
+provide('mainProvide', {
+  deviceC
+})
 </script>
 
 <template>
@@ -237,7 +251,7 @@ onMounted(async () => {
       <button @click="deviceC.pause">暂停</button>
       <button @click="deviceC.start">开始</button>
       <button @click="deviceC.stop">退出</button>
-      <button @click="timer.reset()">重置</button>
+      <button @click="init211011Video(5)">重置</button>
     </div>
     <div class="top">
       <img src="./assets/ui/training_nav.png" />
@@ -260,7 +274,8 @@ onMounted(async () => {
     <div class="bottom">
       {{ $t(`${deviceConfig?.base?.fileData?.introduction_name || ''}`) }}
     </div>
-    <Supermarket :time="showTimeText" v-if="externalParameters.id == 211011" />
+    <Supermarket :time="onetimeRef" v-if="externalParameters.id == 211011" />
+    <centuryPark :time="onetimeRef" v-if="externalParameters.id == 111011" />
   </div>
 </template>
 

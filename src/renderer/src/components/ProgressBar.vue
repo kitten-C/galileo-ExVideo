@@ -6,7 +6,7 @@
       <div
         class="progress_bar_item"
         :class="{ progress_bar_item_comp: item.status }"
-        v-for="(item, index) in list"
+        v-for="(item, index) in props.list"
         :key="index"
       >
         <img class="progress_bar_main_img" :src="item.img" alt="" />
@@ -17,46 +17,19 @@
   </div>
 </template>
 <script setup>
-import { nextTick, ref, watchEffect } from 'vue'
-import { useI18n } from 'vue-i18n'
-import img1 from '../assets/ui/product/oil.png'
-import img2 from '../assets/ui/product/toothbrush.png'
-import img3 from '../assets/ui/product/toothpaste.png'
-import img4 from '../assets/ui/product/strawberry.png'
-import img5 from '../assets/ui/product/bellPepper.png'
-import img6 from '../assets/ui/product/pickles.png'
-import img7 from '../assets/ui/product/cake.png'
+import { nextTick, onMounted, ref, watchEffect } from 'vue'
 import TimeComparator from '../../utils/timeComparator'
 
-const { t } = useI18n({})
-const props = defineProps(['time'])
-const list = ref([
-  { img: img1, option: 'oil', text: t('Oil'), status: 0 },
-  { img: img2, option: 'toothpaste', text: t('AdultToothbrush'), status: 0 },
-  { img: img3, option: 'toothbrush', text: t('ChildToothbrush'), status: 0 },
-  { img: img4, option: 'strawberry', text: t('Strawberry'), status: 0 },
-  { img: img5, option: 'bellPepper', text: t('Pepper'), status: 0 },
-  { img: img6, option: 'pickles', text: t('Pickles'), status: 0 },
-  { img: img7, option: 'cake', text: t('Cake'), status: 0 }
-])
+const props = defineProps(['time', 'list', 'configList'])
 
-const configList = [
-  { time: 187, type: 'down', option: 'oil' },
-  { time: 271, type: 'down', option: 'toothpaste' },
-  { time: 284, type: 'down', option: 'toothbrush' },
-  { time: 393, type: 'down', option: 'strawberry' },
-  { time: 415, type: 'down', option: 'bellPepper' },
-  { time: 444, type: 'down', option: 'pickles' },
-  { time: 502, type: 'down', option: 'cake' }
-]
+const timeCoparator = new TimeComparator(props.configList)
 
-const timeCoparator = new TimeComparator(configList)
 watchEffect(() => {
   const res = timeCoparator.compare(props.time)
   if (res.success) {
     nextTick(() => {
       const option = res.data.option
-      list.value.forEach((item) => {
+      props.list.forEach((item) => {
         if (item.option === option) {
           item.status = 1
         }

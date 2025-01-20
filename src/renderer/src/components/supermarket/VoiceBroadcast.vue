@@ -4,10 +4,11 @@
   </div>
 </template>
 <script setup>
-import { nextTick, ref, watchEffect } from 'vue'
+import { nextTick, ref, watchEffect, inject } from 'vue'
 import TimeComparator from '../../../utils/timeComparator'
 import { getLocalMedia } from '../../../utils'
 const props = defineProps(['time'])
+const supermarket = inject('supermarket')
 const audioSrc = ref()
 const audioRef = ref()
 const configList = [
@@ -38,7 +39,10 @@ const configList = [
 ]
 
 const timeCoparator = new TimeComparator(configList)
-
+const reset = () => {
+  timeCoparator.reset()
+}
+supermarket.pushResetFunList(reset)
 watchEffect(() => {
   const res = timeCoparator.compare(props.time)
   if (res.success) {
