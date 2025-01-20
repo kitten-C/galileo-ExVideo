@@ -1,29 +1,19 @@
 <template>
   <div class="century_park">
-    <ProgressBar :time="props.time" :list="progressBarList" :configList="progressBarConfigList" />
+    <ProgressBar :time="props.time" :list="progressBarList" />
+    <mapMark/>
   </div>
 </template>
 <script setup>
 import { nextTick, provide, ref, watchEffect } from 'vue'
 import ProgressBar from '../ProgressBar.vue'
 import TimeComparator from '../../../utils/timeComparator'
+import mapMark from './mapMark.vue'
+
+
 const props = defineProps(['time'])
 const resetFunList = []
 
-const reset = () => {
-  try {
-    resetFunList.forEach((v) => {
-      v()
-    })
-    nextTick(() => {
-      progressBarList.value.forEach((v) => {
-        v.status = 0
-      })
-    })
-  } catch (error) {
-    console.error('reset >>', error)
-  }
-}
 const progressBarList = ref([
   { option: 'place1', text: '镜天湖', status: 0 },
   { option: 'place2', text: '云帆桥', status: 0 },
@@ -44,10 +34,31 @@ const progressBarConfigList = [
   { time: 1053, type: 'down', option: 'place7' }
 ]
 const timeCoparator = new TimeComparator(progressBarConfigList)
+const reset = () => {
+  try {
+    resetFunList.forEach((v) => {
+      v()
+    })
+    nextTick(() => {
+      progressBarList.value.forEach((v) => {
+        v.status = 0
+      })
+    })
+    timeCoparator.reset()
+  } catch (error) {
+    console.error('reset >>', error)
+  }
+}
 watchEffect(() => {
   const res = timeCoparator.compare(props.time)
   if (res.success) {
     nextTick(() => {
+      const option = res.data.option
+      progressBarList.value.forEach((item) => {
+        if (item.option === option) {
+          item.status = 1
+        }
+      })
       if (res.data.option === 'place7') {
         console.log('century_park reset')
 

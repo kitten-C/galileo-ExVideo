@@ -17,26 +17,7 @@
   </div>
 </template>
 <script setup>
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
-import TimeComparator from '../../utils/timeComparator'
-
 const props = defineProps(['time', 'list', 'configList'])
-
-const timeCoparator = new TimeComparator(props.configList)
-
-watchEffect(() => {
-  const res = timeCoparator.compare(props.time)
-  if (res.success) {
-    nextTick(() => {
-      const option = res.data.option
-      props.list.forEach((item) => {
-        if (item.option === option) {
-          item.status = 1
-        }
-      })
-    })
-  }
-})
 </script>
 <style lang="scss">
 .progress_bar {

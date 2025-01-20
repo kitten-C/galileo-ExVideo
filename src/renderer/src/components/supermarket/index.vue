@@ -44,21 +44,6 @@ const pushResetFunList = (fn) => {
   resetFunList.push(fn)
 }
 
-const reset = () => {
-  try {
-    resetFunList.forEach((v) => {
-      v()
-    })
-    nextTick(() => {
-      progressBarList.value.forEach((v) => {
-        v.status = 0
-      })
-    })
-  } catch (error) {
-    console.error('reset >>', error)
-  }
-}
-
 const configList = [
   { time: 34, comp: 'BlackTransition' },
   { time: 34, comp: 'ShoppingList', action: 'unshow' },
@@ -122,6 +107,23 @@ const progressBarConfigList = [
 ]
 
 const timeCoparator = new TimeComparator(configList)
+const timeCoparator2 = new TimeComparator(progressBarConfigList)
+const reset = () => {
+  try {
+    resetFunList.forEach((v) => {
+      v()
+    })
+    nextTick(() => {
+      progressBarList.value.forEach((v) => {
+        v.status = 0
+      })
+    })
+    timeCoparator.reset()
+    timeCoparator2.reset()
+  } catch (error) {
+    console.error('reset >>', error)
+  }
+}
 const actionFn = {
   unshow: {
     ShoppingList: () => {
@@ -166,6 +168,21 @@ watchEffect(() => {
     })
   }
 })
+
+watchEffect(() => {
+  const res = timeCoparator2.compare(props.time)
+  if (res.success) {
+    nextTick(() => {
+      const option = res.data.option
+      progressBarList.value.forEach((item) => {
+        if (item.option === option) {
+          item.status = 1
+        }
+      })
+    })
+  }
+})
+
 onMounted(() => {})
 
 provide('supermarket', {
