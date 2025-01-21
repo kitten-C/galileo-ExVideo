@@ -8,7 +8,7 @@ import transitionManager from '../utils/transitionManager'
 import { useI18n } from 'vue-i18n'
 import { config } from '../utils'
 import Supermarket from './components/supermarket/index.vue'
-import centuryPark from './components/centuryPark/index.vue' 
+import centuryPark from './components/centuryPark/index.vue'
 import TimeComparator from '../utils/timeComparator'
 
 console.log('config', config)
@@ -95,8 +95,7 @@ const deviceC = {
     treadmillDLLControl?.delVel()
   },
   reset() {
-
-    console.log('devide reset');
+    console.log('devide reset')
     timer.pause()
     treadmillDLLControl?.reset()
     sixAxisDLLControl?.reset()
@@ -108,7 +107,6 @@ const deviceC = {
 }
 
 const handleTime = (time, untime, onetime) => {
-  
   countdown.value = time
   showTimeText.value = untime / 1000
   // console.log('time, untime, onetime', time, untime, onetime, showTimeText.value);
@@ -286,6 +284,10 @@ provide('mainProvide', {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   video {
     height: 100%;

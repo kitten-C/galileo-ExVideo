@@ -1,7 +1,8 @@
 <template>
   <div class="century_park">
     <ProgressBar :time="props.time" :list="progressBarList" />
-    <mapMark/>
+    <mapMark :showList="showList" />
+    <routeSelect :showList="showList" />
   </div>
 </template>
 <script setup>
@@ -9,10 +10,29 @@ import { nextTick, provide, ref, watchEffect } from 'vue'
 import ProgressBar from '../ProgressBar.vue'
 import TimeComparator from '../../../utils/timeComparator'
 import mapMark from './mapMark.vue'
-
+import routeSelect from './routeSelect.vue'
 
 const props = defineProps(['time'])
 const resetFunList = []
+const showList = ref(Array(7).fill(true))
+
+const setShowList = (index) => {
+  if (showList.value[index]) {
+    const flag = showList.value.every((v, i) => {
+      if (i === index) {
+        return true
+      } else {
+        return !v
+      }
+    })
+    if (flag) {
+      return
+    }
+  }
+
+  showList.value[index] = !showList.value[index]
+  progressBarList.value[index].status = !showList.value[index] ? 1 : 0
+}
 
 const progressBarList = ref([
   { option: 'place1', text: '镜天湖', status: 0 },
@@ -66,6 +86,10 @@ watchEffect(() => {
       }
     })
   }
+})
+
+provide('century_park', {
+  setShowList
 })
 </script>
 <style lang="scss" scoped>
